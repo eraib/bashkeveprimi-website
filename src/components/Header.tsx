@@ -1,9 +1,9 @@
-import {Navbar} from "./Navbar"
+import { Navbar } from "./Navbar";
 
 const Header = () => {
-  return (
-    <Navbar/>
-  )
-}
+	const menuitems = ["Home", "Orphans", "Projects", "Requests"];
 
-export default Header
+	return <Navbar menuitems={menuitems} />;
+};
+
+export default Header;
