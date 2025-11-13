@@ -1,4 +1,4 @@
-import { Navbar } from "./Navbar";
+import Navbar from "./Navbar";
 
 const Header = () => {
 	const menuitems = ["Home", "Orphans", "Projects", "Requests"];
