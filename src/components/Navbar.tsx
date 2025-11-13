@@ -1,6 +1,14 @@
 import logo from "../assets/icons/logo.svg"
 
 export const Navbar = () => {
+
+  function moveToFooterSmoothly(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    e.preventDefault(); // prevent default anchor jump
+    const footer = document.getElementById("footer-id");
+    footer?.scrollIntoView({ behavior: "smooth" }); // smooth scroll
+  }
+
+
   return (
     <nav className="bg-[#F3F2E7] py-4">
       <div className="h-16 flex items-center justify-between px-4">
@@ -11,7 +19,7 @@ export const Navbar = () => {
         <div className="flex gap-6 bg-[#F3F2E7] items-center">
           <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Home</a>
           <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Programs</a>
-          <a href="#" className="text-black-100 opacity-50 text-base hover:text-white ">About Us</a>
+          <a href="#" className="text-black-100 opacity-50 text-base hover:text-white "  onClick={moveToFooterSmoothly}>About Us</a>
           <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Support</a>
           <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Emergency</a>
           <button className="bg-[#00CFD0] text-black px-8 py-4 rounded hover:text-white transition-colors">

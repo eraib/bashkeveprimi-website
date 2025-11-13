@@ -2,7 +2,7 @@ import logo from "../assets/icons/logo.svg"
 
 export const Footer = () => {
 	return (
-		<footer className="bg-gray-900 text-white">
+		<footer className="bg-gray-900 text-white " id="footer-id">
 			<div className="flex  sm:px-12 px-4 bg-[#ffffff19] py-7">
 				{/* You can add footer content here later */}
 				<div className="flex-1">
