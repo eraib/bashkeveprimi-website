@@ -1,4 +1,5 @@
 import BashkeveprimiFeatures from "./components/BashkeveprimiFeatures";
+import BashkeveprimiInfo from "./components/BashkeveprimiInfo";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import OrganizationRecentFeatures from "./components/OrganizationRecentFeatures";
@@ -13,6 +14,7 @@ function App() {
         <PeriodicActions />
         <BashkeveprimiFeatures />
         <OrganizationRecentFeatures />
+        <BashkeveprimiInfo />
       </main>
 
       <Footer />
