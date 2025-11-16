@@ -1,9 +1,8 @@
 import Navbar from "./Navbar";
 import logo from "../assets/icons/logo.svg";
+import { menuitems } from "../constants/menuitems";
 
 const Header = () => {
-	const menuitems = ["Home", "Orphans", "Projects", "Requests"];
-
 	return (
 		<div className="bg-[#F3F2E7] py-4">
 			<div className="h-16 flex items-center justify-between px-4">
