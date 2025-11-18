@@ -1,34 +1,31 @@
-import logo from "../assets/icons/logo.svg"
+import { clsx } from "clsx";
 
-export const Navbar = () => {
-
-  function moveToFooterSmoothly(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-    e.preventDefault(); // prevent default anchor jump
-    const footer = document.getElementById("footer-id");
-    footer?.scrollIntoView({ behavior: "smooth" }); // smooth scroll
-  }
-
-
-  return (
-    <nav className="bg-[#F3F2E7] py-4">
-      <div className="h-16 flex items-center justify-between px-4">
-        <div className="text-3xl text-white font-bold flex items-center"><img src={logo} alt="" />
-        <p className="text-[#00CFD0] break-normal max-w-40 text-base ">Organizata Bashkeveprimi</p>
-        </div>
-
-        <div className="flex gap-6 bg-[#F3F2E7] items-center">
-          <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Home</a>
-          <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Programs</a>
-          <a href="#" className="text-black-100 opacity-50 text-base hover:text-white "  onClick={moveToFooterSmoothly}>About Us</a>
-          <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Support</a>
-          <a href="#" className="text-black-100 opacity-50  text-base hover:text-white ">Emergency</a>
-          <button className="bg-[#00CFD0] text-black px-8 py-4 rounded hover:text-white transition-colors">
-              Donate now
-          </button>
-
-        </div>
-      </div>
-    </nav>
-  );
+interface MenuItem {
+	title: string;
+	action?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
+type NavbarProps = {
+	menuitems: MenuItem[];
 };
 
+const Navbar = ({ menuitems }: NavbarProps) => {
+	// TODO: implement routering to display border bottom on active the menuitem
+	// const { isActiveTab } = useIsActiveTab();
+
+	return (
+		<div className="flex gap-6 bg-[#F3F2E7] items-center">
+			{menuitems.map((menuitem) => (
+				<a
+					href="#"
+					onClick={(e) => menuitem?.action?.(e)}
+					className={clsx(
+						"text-black-100 opacity-50 text-base hover:text-white"
+						// isActiveTab ? " border-b" : ""
+					)}>
+					{menuitem.title}
+				</a>
+			))}
+		</div>
+	);
+};
+export default Navbar;

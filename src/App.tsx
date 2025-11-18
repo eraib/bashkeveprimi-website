@@ -7,19 +7,19 @@ import PeriodicActions from "./components/PeriodicActions";
 import "./index.css";
 
 function App() {
-  return (
-    <>
-      <Header />
-      <main className="min-h-screen mt-1">
-        <PeriodicActions />
-        <BashkeveprimiFeatures />
-        <OrganizationRecentFeatures />
-        <BashkeveprimiInfo />
-      </main>
+	return (
+		<>
+			<Header />
+			<main className="min-h-screen mt-1">
+				<PeriodicActions />
+				<BashkeveprimiFeatures />
+				<OrganizationRecentFeatures />
+				<BashkeveprimiInfo />
+			</main>
 
-      <Footer />
-    </>
-  );
+			<Footer />
+		</>
+	);
 }
 
 export default App;
