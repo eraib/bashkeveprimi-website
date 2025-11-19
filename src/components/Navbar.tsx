@@ -1,31 +1,31 @@
-import { clsx } from "clsx";
+import { NavLink } from "react-router-dom";
+import { toKebabCase } from "../utils/toKebabCase";
 
 interface MenuItem {
-	title: string;
-	action?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  title: string;
+  action?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 type NavbarProps = {
-	menuitems: MenuItem[];
+  menuitems: MenuItem[];
 };
 
 const Navbar = ({ menuitems }: NavbarProps) => {
-	// TODO: implement routering to display border bottom on active the menuitem
-	// const { isActiveTab } = useIsActiveTab();
-
-	return (
-		<div className="flex gap-6 bg-[#F3F2E7] items-center">
-			{menuitems.map((menuitem) => (
-				<a
-					href="#"
-					onClick={(e) => menuitem?.action?.(e)}
-					className={clsx(
-						"text-black-100 opacity-50 text-base hover:text-white"
-						// isActiveTab ? " border-b" : ""
-					)}>
-					{menuitem.title}
-				</a>
-			))}
-		</div>
-	);
+  return (
+    <div className="flex gap-6 bg-[#F3F2E7] items-center">
+      {menuitems.map((menuitem) => (
+        <NavLink
+          //  to={toKebabCase(menuitem.title)}
+          to={`/${toKebabCase(menuitem.title)}`}
+          className={({ isActive }) =>
+            isActive
+              ? "text-black-100 opacity-50 text-base hover:text-white border-b"
+              : "text-black-100 opacity-50 text-base hover:text-white"
+          }
+        >
+          {menuitem.title}
+        </NavLink>
+      ))}
+    </div>
+  );
 };
 export default Navbar;
