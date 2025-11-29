@@ -2,6 +2,9 @@ import Navbar from "./Navbar";
 import logo from "../assets/icons/logo.svg";
 import { menuitems } from "../constants/menuitems";
 import { useNavigate } from "react-router-dom";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaHamburger } from "react-icons/fa";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -18,8 +21,9 @@ const Header = () => {
 					</p>
 				</div>
 
-				<div className="flex items-center gap-3 lg:gap-6 ml-auto">
+				<div className="flex items-center gap-2 md:gap-3 lg:gap-6 ml-auto">
 					<Navbar menuitems={menuitems} />
+					<RxHamburgerMenu className="flex md:hidden w-6 h-6" />
 					<button className="bg-[#00CFD0] whitespace-nowrap text-white py-1.5 lg:py-3.5 px-4 lg:px-8 leading-5 rounded-md hover:bg-[#00b6b7] transition max-w-48">
 						Donate Now
 					</button>
