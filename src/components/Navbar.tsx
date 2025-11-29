@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { toKebabCase } from "../utils/toKebabCase";
 import type { MenuItem } from "../constants/menuitems";
 import { BiChevronDown } from "react-icons/bi";
