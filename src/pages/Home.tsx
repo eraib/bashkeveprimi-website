@@ -4,22 +4,24 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import OrganizationRecentFeatures from "../components/OrganizationRecentFeatures";
 import PeriodicActions from "../components/PeriodicActions";
+import WhoAreWe from "../components/WhoWeAreStats";
 import "../index.css";
 
 function Home() {
-	return (
-		<>
-			<Header />
-			<main className="min-h-screen mt-1">
-				<PeriodicActions />
-				<BashkeveprimiFeatures />
-				<OrganizationRecentFeatures />
-				<BashkeveprimiInfo />
-			</main>
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen mt-1 overflow-x-hidden">
+        <PeriodicActions />
+        <WhoAreWe />
+        <BashkeveprimiFeatures />
+        <OrganizationRecentFeatures />
+        <BashkeveprimiInfo />
+      </main>
 
-			<Footer />
-		</>
-	);
+      <Footer />
+    </>
+  );
 }
 
 export default Home;

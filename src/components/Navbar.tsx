@@ -11,15 +11,15 @@ type NavbarProps = {
 
 const Navbar = ({ menuitems }: NavbarProps) => {
   return (
-    <div className="flex gap-6 bg-[#F3F2E7] items-center">
+    <div className="flex gap-2 sm:gap-3 md:gap-6 bg-[#F3F2E7] items-center flex-wrap sm:flex-nowrap">
       {menuitems.map((menuitem) => (
         <NavLink
           //  to={toKebabCase(menuitem.title)}
           to={`/${toKebabCase(menuitem.title)}`}
           className={({ isActive }) =>
             isActive
-              ? "text-black-100 opacity-50 text-base hover:text-white border-b"
-              : "text-black-100 opacity-50 text-base hover:text-white"
+              ? "text-black-100 opacity-50 text-xs sm:text-sm md:text-base hover:text-white border-b whitespace-nowrap"
+              : "text-black-100 opacity-50 text-xs sm:text-sm md:text-base hover:text-white whitespace-nowrap"
           }
         >
           {menuitem.title}

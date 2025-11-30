@@ -2,7 +2,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import OrganizationInfo from "../components/OrganizationInfo";
 import SupportThoseWhoNeed from "../components/SupportThoseWhoNeed";
-import WhoAreWe from "../components/WhoAreWe";
+import WhoAreWe from "../components/WhoWeAreStats";
 import AboutVideoDescription from "../components/AboutVideoDescription";
 import ContactUs from "../components/ContactUs";
 import AboutUsBackground from "../components/AboutUsBackground";
