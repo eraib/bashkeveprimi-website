@@ -2,8 +2,6 @@ import Navbar from "./Navbar";
 import logo from "../assets/icons/logo.svg";
 import { menuitems } from "../constants/menuitems";
 import { useNavigate } from "react-router-dom";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaHamburger } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 const Header = () => {
