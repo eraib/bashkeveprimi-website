@@ -7,7 +7,11 @@ export const menuitems: MenuItem[] = [
 	{ title: "Home" },
 	{
 		title: "Programs",
-		submenus: [{ title: "Orphans" }, { title: "Projects" }],
+		submenus: [
+			{ title: "Orphans" },
+			{ title: "Projects" },
+			{ title: "Requests" },
+		],
 	},
 	{ title: "About Us" },
 	{ title: "Support" },
