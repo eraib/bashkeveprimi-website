@@ -79,7 +79,7 @@ export default function PeriodicActions() {
 							</button>
 						</div>
 
-						<div className="w-full md:w-1/2 flex justify-center items-center relative py-4 md:py-0 z-90">
+						<div className="w-full md:w-1/2 flex justify-center items-center relative py-4 md:py-0 z-60">
 							<img
 								src={item.image}
 								alt={item.title}
