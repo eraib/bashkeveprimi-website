@@ -84,7 +84,7 @@ export default function PeriodicActions() {
     <div className="relative w-full min-h-[500px] md:h-[600px] overflow-hidden bg-[#F3F2E7] rounded-[8px]">
       {/* Static decorative elements - outside slider */}
       {/* Darker blue circle - CSS generated */}
-      <div className="absolute hidden md:flex items-center justify-center left-[825px] w-[1207px] h-[1034px] top-[-23px] z-30 pointer-events-none">
+      <div className="absolute md:flex items-center justify-center left-[825px] w-[1207px] h-[1034px] top-[-23px] z-30 pointer-events-none">
         <div className="rotate-45">
           <div className="bg-[#00CFD0] w-[673px] h-[1034px] rounded-[380px]"></div>
         </div>
@@ -103,6 +103,11 @@ export default function PeriodicActions() {
         alt="Background line circle"
         className="absolute right-[300px] bottom-[65px] w-[200px] h-[200px] md:w-[300px] md:h-[300px] pointer-events-none hidden lg:block z-40"
       />
+
+      {/* Darker small blue circle - CSS generated */}
+      <div className="absolute hidden lg:flex -right-[900px] bottom-0 w-[1207px] z-30 pointer-events-none">
+        <div className="bg-[#00A5A6] w-[228px] h-[228px] rounded-full"></div>
+      </div>
 
       {/* Pagination dots */}
       <div className="absolute top-4 left-4 md:top-[48px] md:left-[98px] flex gap-2 items-center z-50">
