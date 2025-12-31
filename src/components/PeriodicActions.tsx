@@ -101,7 +101,7 @@ export default function PeriodicActions() {
       <img
         src={lineCircle}
         alt="Background line circle"
-        className="absolute right-[280px] bottom-[70px] w-[200px] h-[200px] md:w-[300px] md:h-[300px] pointer-events-none hidden md:block z-40"
+        className="absolute right-[300px] bottom-[65px] w-[200px] h-[200px] md:w-[300px] md:h-[300px] pointer-events-none hidden lg:block z-40"
       />
 
       {/* Pagination dots */}
@@ -128,7 +128,7 @@ export default function PeriodicActions() {
             <div className="w-full md:w-1/2 flex flex-col justify-center px-4 sm:px-8 md:pl-[98px] md:pr-[48px] py-8 md:py-[48px] relative z-40">
               <div className="flex flex-col gap-6 md:gap-[48px] max-w-full md:w-[517px]">
                 <div className="flex flex-col gap-4 md:gap-[24px]">
-                  <h1 className="text-3xl sm:text-4xl md:text-[56px] leading-normal text-black">
+                  <h1 className="text-2xl sm:text-3xl md:text-3xl xl:text-5xl leading-normal text-black">
                     <span className="font-light">{item.title} </span>
                     <span className="font-bold">{item.slogan}</span>
                   </h1>
@@ -143,7 +143,7 @@ export default function PeriodicActions() {
             </div>
 
             <div className="w-full md:w-1/2 flex justify-center items-center relative py-4 md:py-0 z-50">
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] rounded-full bg-white overflow-hidden z-50">
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[350px] md:h-[350px] lg:w-[450px] lg:h-[450px] rounded-full bg-white overflow-hidden z-50">
                 <img
                   src={item.image}
                   alt={item.title}
