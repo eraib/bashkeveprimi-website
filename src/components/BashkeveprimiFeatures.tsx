@@ -6,7 +6,7 @@ import Squiggle2 from "../assets/icons/squiggle-2.svg";
 
 export const BashkeveprimiFeatures = () => {
   return (
-    <div className="flex flex-col items-center w-full mt-12 relative">
+    <div className="flex flex-col items-center w-full mt-12 relative mb-24">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 px-4 sm:px-6">
         <h1 className="text-[#00CFD0] text-xl sm:text-2xl font-light uppercase tracking-widest">
@@ -28,10 +28,10 @@ export const BashkeveprimiFeatures = () => {
       />
 
       {/* Features Container */}
-      <div className="w-full sm:w-5/6 md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 px-2 sm:px-0">
+      <div className="w-full sm:w-5/6 md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-6 px-2 sm:px-0">
         {/* Feature 1 */}
-        <div className="bg-[#F3F2E7] p-4 sm:p-6 rounded-2xl">
-          <div className="flex items-center gap-2 sm:gap-4">
+        <div className="bg-[#F3F2E7] p-4 sm:p-6 sm:py-12 rounded-2xl">
+          <div className="flex items-center gap-8">
             <img
               src={DirectHelp}
               alt="Direct help"
@@ -48,8 +48,8 @@ export const BashkeveprimiFeatures = () => {
         </div>
 
         {/* Feature 2 */}
-        <div className="bg-[#F3F2E7] p-4 sm:p-6 rounded-2xl">
-          <div className="flex items-center gap-2 sm:gap-4">
+        <div className="bg-[#F3F2E7] p-4 sm:p-6 sm:py-12  rounded-2xl">
+          <div className="flex items-center gap-8">
             <img
               src={GivingInformation}
               alt="Giving Information"
@@ -66,8 +66,8 @@ export const BashkeveprimiFeatures = () => {
         </div>
 
         {/* Feature 3 */}
-        <div className="bg-[#F3F2E7] p-4 sm:p-6 rounded-2xl">
-          <div className="flex items-center gap-2 sm:gap-4">
+        <div className="bg-[#F3F2E7] p-4 sm:p-6 sm:py-12  rounded-2xl">
+          <div className="flex items-center gap-8">
             <img
               src={RaisingAwareness}
               alt="Raising Awareness"
@@ -84,8 +84,8 @@ export const BashkeveprimiFeatures = () => {
         </div>
 
         {/* Feature 4 */}
-        <div className="bg-[#F3F2E7] p-4 sm:p-6 rounded-2xl">
-          <div className="flex items-center gap-2 sm:gap-4">
+        <div className="bg-[#F3F2E7] p-4 sm:p-6 sm:py-12  rounded-2xl">
+          <div className="flex items-center gap-6">
             <img
               src={RelievingPoverty}
               alt="Relieving Poverty"
