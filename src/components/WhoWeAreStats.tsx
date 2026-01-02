@@ -62,7 +62,7 @@ const WhoWeAreStats = () => {
         </div>
 
         {/* CTA Box */}
-        <div className="bg-[#00a5a6] min-h-[172px] md:h-[172px] lg:h-[172px] lg:w-[261.373px] rounded-b-[8.431px] md:rounded-br-[8.431px] md:rounded-tr-[8.431px] md:rounded-bl-none md:rounded-tl-none lg:rounded-br-[8.431px] lg:rounded-tr-[8.431px] lg:rounded-bl-none lg:rounded-tl-none relative flex flex-col justify-center lg:justify-start">
+        <div className="bg-[#00a5a6] min-h-[172px] md:h-[172px] lg:h-[172px] lg:w-[261.373px] rounded-b-[8.431px] md:rounded-br-[8.431px] md:rounded-tr-[8.431px] md:rounded-bl-none md:rounded-tl-none lg:rounded-br-[8.431px] lg:rounded-tr-[8.431px] lg:rounded-bl-none lg:rounded-tl-none relative flex flex-col justify-center lg:justify-start text-center lg:text-left ml-3">
           {/* "Our Goal is to" and "Help Poor People" */}
           <div className="flex flex-col lg:absolute font-['Rowdies'] font-light justify-center leading-normal px-6 lg:px-0 lg:left-[42.16px] text-white text-base sm:text-lg lg:text-[20px] lg:top-[76.27px] lg:translate-y-[-50%] lg:w-[177.059px] whitespace-pre-wrap pt-6 lg:pt-0">
             <p className="mb-0">Our Goal is to</p>
@@ -70,11 +70,11 @@ const WhoWeAreStats = () => {
           </div>
 
           {/* "become volunteer" button with arrow */}
-          <div className="relative lg:absolute left-6 lg:left-[42.16px] top-auto lg:top-[113.14px] cursor-pointer pb-6 lg:pb-0">
+          <div className="relative lg:absolute  lg:left-[42.16px] top-auto lg:top-[113.14px] cursor-pointer pb-6 lg:pb-0">
             <p className="relative lg:absolute text-white text-xs sm:text-sm lg:text-[14px] leading-normal font-['Rowdies'] font-light whitespace-pre-wrap left-0 lg:top-[8.5px] lg:translate-y-[-50%] lg:w-[134.059px]">
               become volunteer
             </p>
-            <HiArrowRight className="relative lg:absolute text-black left-auto lg:left-[134.06px] top-auto lg:top-[1.53px] ml-2 lg:ml-0 w-3 h-3 lg:w-[12.141px] lg:h-[13.49px] inline lg:block" />
+            <HiArrowRight className="relative lg:absolute text-black left-auto lg:left-[134.06px] top-auto lg:top-[1.53px] ml-2 lg:ml-0 w-5 h-5 lg:w-[12.141px] lg:h-[13.49px] inline lg:block" />
           </div>
 
           {/* Divider */}
