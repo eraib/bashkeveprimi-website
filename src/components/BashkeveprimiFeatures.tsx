@@ -6,7 +6,7 @@ import Squiggle2 from "../assets/icons/squiggle-2.svg";
 
 export const BashkeveprimiFeatures = () => {
   return (
-    <div className="flex flex-col items-center w-full mt-12 relative mb-24">
+    <div className="flex flex-col items-center w-full mt-12 relative sm:mb-24 mb-12">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 px-4 sm:px-6">
         <h1 className="text-[#00CFD0] text-xl sm:text-2xl font-light uppercase tracking-widest">
