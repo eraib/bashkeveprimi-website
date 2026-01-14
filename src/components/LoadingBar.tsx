@@ -7,10 +7,10 @@ const LoadingBar: React.FC<LoadingBarProps> = ({ value, max }) => {
   const percentage = (value / max) * 100;
 
   return (
-    <div className="w-full bg-white rounded-full h-3 border border-gray-200 overflow-hidden mb-2 mt-2 ">
+    <div className="w-full bg-[#e6e4d6] rounded-[4px] h-[8px] overflow-hidden">
       <div
-        className="h-3  transition-all duration-500"
-        style={{ width: `${percentage}%`, backgroundColor: "#00CFD0" }}
+        className="h-[8px] bg-[#2fb0ab] rounded-[4px] transition-all duration-500"
+        style={{ width: `${percentage}%` }}
       ></div>
     </div>
   );
