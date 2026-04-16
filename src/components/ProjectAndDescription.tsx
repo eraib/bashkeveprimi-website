@@ -45,33 +45,32 @@ const ProjectAndDescription = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-10 pt-2 pb-2 ">
+      <div className="flex flex-col gap-10 pt-2 pb-2 px-2 sm:px-4">
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`grid grid-cols-2 gap-0 h-96 rounded-lg overflow-hidden shadow-lg`}
-          >
+            className={`grid grid-cols-1 sm:grid-cols-2 gap-0 h-auto sm:h-96 rounded-lg overflow-hidden shadow-lg`}>
             {/* Image Section */}
             <div
               className={`bg-gray-200 ${
                 index % 2 === 1 ? "order-2" : "order-1"
-              }`}
-            >
+              }`}>
               <img
                 src={project.image}
                 alt={project.city}
-                className="w-full h-full object-cover"
+                className="w-full h-56 sm:h-full object-cover"
               />
             </div>
 
             {/* Description Section */}
             <div
-              className={`p-6 flex flex-col justify-center ${
+              className={`p-4 sm:p-6 flex flex-col justify-center ${
                 index % 2 === 1 ? "order-1 text-right pr-8" : "order-2 pl-8"
-              }`}
-            >
-              <h1 className="text-5xl font-bold mb-4">{project.city}</h1>
-              <p className="text-lg leading-relaxed max-w-xl">
+              }`}>
+              <h1 className="sm:text-5xl text-3xl font-bold mb-4">
+                {project.city}
+              </h1>
+              <p className="sm:text-lg text-md leading-relaxed max-w-xl">
                 {project.description}
               </p>
             </div>
