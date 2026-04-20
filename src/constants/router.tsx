@@ -7,6 +7,8 @@ import Requests from "../pages/Requests";
 import AboutUs from "../pages/AboutUs";
 import DonationSuccess from "../pages/DonationSuccess";
 import DonationCancel from "../pages/DonationCancel";
+import ProjectDetail from "../pages/ProjectDetail";
+import OrphanDetail from "../pages/OrphanDetail";
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +18,9 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "Home", element: <Navigate to="/" replace /> },
       { path: "orphans", element: <Orphans /> },
+      { path: "orphans/:slug", element: <OrphanDetail /> },
       { path: "projects", element: <Projects /> },
+      { path: "projects/:slug", element: <ProjectDetail /> },
       { path: "requests", element: <Requests /> },
       { path: "about-us", element: <AboutUs /> },
       { path: "donation/success", element: <DonationSuccess /> },
