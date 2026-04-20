@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "home": "Home",
+    "programs": "Programs",
+    "orphans": "Orphans",
+    "projects": "Projects",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "makeRequest": "Make a Request",
+    "donateNow": "Donate Now"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Have questions or want to get involved? Reach out to us.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "successMessage": "Thank you! Your message has been sent.",
+    "errorMessage": "Something went wrong. Please try again.",
+    "validation": {
+      "firstNameRequired": "First name is required.",
+      "lastNameRequired": "Last name is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Invalid email.",
+      "messageRequired": "Message is required."
+    }
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "donate": "Donate",
+    "readMore": "Read More",
+    "loading": "Loading...",
+    "error": "Something went wrong."
+  }
+}

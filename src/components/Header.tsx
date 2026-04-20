@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Navbar from "./Navbar";
 import MobileMenu from "./MobileMenu";
+import LanguageSwitcher from "./LanguageSwitcher";
 import logo from "../assets/icons/logo.svg";
 import { menuitems } from "../constants/menuitems";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +15,7 @@ const REQUESTS_BLUE = "#1e3a5f";
 const Header = () => {
   const navigate = useNavigate();
   const { openModal } = useDonation();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: organization } = useOrganizationCurrent();
 
@@ -25,24 +28,30 @@ const Header = () => {
               className="text-3xl text-white flex items-center gap-1 hover:cursor-pointer"
               onClick={() => navigate("/")}>
               <img className="w-12 h-12" src={logo} alt="logo" />
-              <p className="text-[#00CFD0] hidden sm:flex font-bold break-normal max-w-40 text-base ">
+              <p className="text-[#00CFD0] hidden lg:flex font-bold break-normal max-w-40 text-base">
                 {organization?.name || "Organizata Bashkeveprimi"}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 md:gap-2 lg:gap-3 xl:gap-4 ml-auto z-90">
+            <div className="flex items-center gap-2 lg:gap-3 xl:gap-4 ml-auto z-90">
               <Navbar menuitems={menuitems} />
+
+              <div className="hidden md:flex items-center">
+                <span className="w-px h-4 bg-[#3A1700]/15 mx-1" />
+                <LanguageSwitcher />
+                <span className="w-px h-4 bg-[#3A1700]/15 mx-1" />
+              </div>
 
               <button
                 onClick={() => navigate("/requests")}
                 style={{ backgroundColor: REQUESTS_BLUE }}
                 className="hidden md:flex whitespace-nowrap text-white text-xs lg:text-sm py-1.5 px-3 xl:px-5 rounded-md hover:opacity-90 transition">
-                Make a Request
+                {t("nav.makeRequest")}
               </button>
               <button
                 onClick={() => openModal()}
                 className="flex whitespace-nowrap text-white text-xs lg:text-sm py-1.5 px-3 xl:px-5 rounded-md hover:bg-[#00b6b7] transition bg-[#00CFD0]">
-                Donate Now
+                {t("nav.donateNow")}
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
