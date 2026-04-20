@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import {
 	donationsApi,
 	getAboutPage,
@@ -16,15 +17,17 @@ import {
 } from "./api";
 
 export function useAboutPage() {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["about"],
+		queryKey: ["about", i18n.language],
 		queryFn: getAboutPage,
 	});
 }
 
 export function useOrganizationCurrent() {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["organization", "current"],
+		queryKey: ["organization", i18n.language],
 		queryFn: getOrganizationCurrent,
 	});
 }
@@ -35,8 +38,9 @@ export function useCausesList(params?: {
 	ordering?: string;
 	is_active?: boolean;
 }) {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["causes", params ?? {}],
+		queryKey: ["causes", i18n.language, params ?? {}],
 		queryFn: () => getCauses(params),
 	});
 }
@@ -48,15 +52,17 @@ export function useProjectsList(params?: {
 	is_active?: boolean;
 	cause?: number;
 }) {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["projects", "list", params ?? {}],
+		queryKey: ["projects", "list", i18n.language, params ?? {}],
 		queryFn: () => getProjects(params),
 	});
 }
 
 export function useProjectDetail(slug: string | undefined) {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["projects", "detail", slug],
+		queryKey: ["projects", "detail", i18n.language, slug],
 		queryFn: () => getProjectBySlug(slug!),
 		enabled: Boolean(slug),
 	});
@@ -68,15 +74,17 @@ export function useOrphanProjectsList(params?: {
 	search?: string;
 	ordering?: string;
 }) {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["orphan-projects", "list", params ?? {}],
+		queryKey: ["orphan-projects", "list", i18n.language, params ?? {}],
 		queryFn: () => getOrphanProjects(params),
 	});
 }
 
 export function useOrphanProjectDetail(slug: string | undefined) {
+	const { i18n } = useTranslation();
 	return useQuery({
-		queryKey: ["orphan-projects", "detail", slug],
+		queryKey: ["orphan-projects", "detail", i18n.language, slug],
 		queryFn: () => getOrphanProjectBySlug(slug!),
 		enabled: Boolean(slug),
 	});
