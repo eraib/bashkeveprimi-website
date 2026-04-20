@@ -186,6 +186,27 @@ export async function submitHelpRequest(
 	return data;
 }
 
+export type ContactMessagePayload = {
+	full_name: string;
+	email: string;
+	phone: string;
+	message: string;
+};
+
+export type ContactMessageResponse = {
+	message?: string;
+	full_name?: string;
+	email?: string;
+	phone?: string;
+};
+
+export async function submitContactMessage(
+	payload: ContactMessagePayload
+): Promise<ContactMessageResponse> {
+	const { data } = await http.post<ContactMessageResponse>("/contact/", payload);
+	return data;
+}
+
 export type CheckoutSessionRequest = {
 	amount_eur_cents: number;
 	designation_type?: DesignationType;
