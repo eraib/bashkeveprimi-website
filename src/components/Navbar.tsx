@@ -31,15 +31,15 @@ const Navbar = ({ menuitems }: NavbarProps) => {
   return (
     <div
       ref={ref}
-      className="hidden md:flex gap-4 lg:gap-6 flex-row bg-[#F3F2E7] items-center">
+      className="hidden md:flex gap-3 lg:gap-5 xl:gap-6 flex-row bg-[#F3F2E7] items-center">
       {menuitems.map((menuitem) => (
-        <div key={menuitem.title} className="relative flex flex-col">
+        <div key={menuitem.title} className="relative flex items-center">
           <div className="flex items-center gap-1">
             {menuitem.submenus ? (
               <button
                 onClick={() => toggleDropdown(menuitem.title)}
                 className={clsx(
-                  "cursor-pointer text-black/50 whitespace-nowrap flex items-center gap-0.5 transition-all duration-150 hover:text-black/70",
+                  "cursor-pointer text-black/50 whitespace-nowrap flex items-center gap-0.5 transition-all duration-150 hover:text-black/70 text-xs lg:text-sm",
                   (isSubMenuActive(menuitem) ||
                     openDropdown === menuitem.title) &&
                     "text-black/80"
@@ -62,7 +62,7 @@ const Navbar = ({ menuitems }: NavbarProps) => {
                 {({ isActive }) => (
                   <span
                     className={clsx(
-                      "text-black/50 hover:text-black/70 whitespace-nowrap transition-colors duration-150",
+                      "text-black/50 hover:text-black/70 whitespace-nowrap transition-colors duration-150 text-xs lg:text-sm",
                       isActive && "text-black/80"
                     )}>
                     {menuitem.title}

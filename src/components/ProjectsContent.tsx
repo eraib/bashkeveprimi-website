@@ -57,9 +57,10 @@ const ProjectsContent = () => {
 							? Number(project.goal_amount)
 							: 0;
 						return (
-							<div
+							<Link
 								key={project.id}
-								className="grid grid-cols-1 sm:grid-cols-2 gap-0 h-auto sm:min-h-96 rounded-lg overflow-hidden shadow-lg">
+								to={`/projects/${project.slug}`}
+								className="grid grid-cols-1 sm:grid-cols-2 gap-0 h-auto sm:min-h-96 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
 								<div
 									className={`bg-gray-200 ${
 										index % 2 === 1 ? "order-2" : "order-1"
@@ -81,12 +82,8 @@ const ProjectsContent = () => {
 											{project.cause_title}
 										</p>
 									)}
-									<h2 className="sm:text-5xl text-3xl font-bold mb-4 text-[#3A1700]">
-										<Link
-											to={`/projects/${project.slug}`}
-											className="hover:text-[#00b6b7] transition-colors">
-											{project.title}
-										</Link>
+									<h2 className="sm:text-5xl text-3xl font-bold mb-4 text-[#3A1700] hover:text-[#00b6b7] transition-colors">
+										{project.title}
 									</h2>
 									<p className="sm:text-lg text-md leading-relaxed max-w-xl text-[#3A1700]/85 mb-6">
 										{project.summary}
@@ -109,21 +106,19 @@ const ProjectsContent = () => {
 											value={project.donation_progress}
 											max={100}
 										/>
-									<div className="flex items-center gap-4 mt-1 flex-wrap">
-										<Link
-											to={`/projects/${project.slug}`}
-											className="inline-flex items-center text-[#00CFD0] font-medium hover:underline">
-											Read more →
-										</Link>
-										<button
-											onClick={() => openModal("project", project.slug)}
-											className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
-											Donate
-										</button>
-									</div>
+										<div className="mt-1">
+											<button
+												onClick={(e) => {
+													e.preventDefault();
+													openModal("project", project.slug);
+												}}
+												className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
+												Donate
+											</button>
+										</div>
 									</div>
 								</div>
-							</div>
+							</Link>
 						);
 					})
 				)}

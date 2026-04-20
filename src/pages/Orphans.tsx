@@ -6,7 +6,7 @@ function Orphans() {
   return (
     <>
       <Header />
-      <main className="min-h-screen mt-1">
+      <main className="min-h-screen mt-1 pb-20">
         <OrphansContent />
       </main>
 

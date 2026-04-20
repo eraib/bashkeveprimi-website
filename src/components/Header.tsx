@@ -30,7 +30,7 @@ const Header = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2 md:gap-1.5 lg:gap-2 xl:gap-3 ml-auto z-90">
+            <div className="flex items-center gap-2 md:gap-2 lg:gap-3 xl:gap-4 ml-auto z-90">
               <Navbar menuitems={menuitems} />
 
               <button
@@ -41,7 +41,7 @@ const Header = () => {
               </button>
               <button
                 onClick={() => openModal()}
-                className="bg-[#00CFD0] whitespace-nowrap text-white text-xs lg:text-sm py-1.5 px-3 xl:px-5 rounded-md hover:bg-[#00b6b7] transition">
+                className="flex whitespace-nowrap text-white text-xs lg:text-sm py-1.5 px-3 xl:px-5 rounded-md hover:bg-[#00b6b7] transition bg-[#00CFD0]">
                 Donate Now
               </button>
               <button
@@ -57,7 +57,6 @@ const Header = () => {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        onDonate={() => openModal()}
       />
     </>
   );

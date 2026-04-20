@@ -6,12 +6,11 @@ import { BiChevronDown, BiX } from "react-icons/bi";
 import clsx from "clsx";
 
 type MobileMenuProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onDonate: () => void;
+	isOpen: boolean;
+	onClose: () => void;
 };
 
-const MobileMenu = ({ isOpen, onClose, onDonate }: MobileMenuProps) => {
+const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -137,13 +136,13 @@ const MobileMenu = ({ isOpen, onClose, onDonate }: MobileMenuProps) => {
         </nav>
 
         {/* Bottom CTAs */}
-        <div className="px-4 py-4 border-t border-[#00CFD0]/20 flex items-center justify-center">
+        <div className="px-4 py-4 border-t border-[#00CFD0]/20">
           <button
             onClick={() => {
               onClose();
               navigate("/requests");
             }}
-            className="flex-1 text-white py-2.5 rounded-md text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="w-full text-white py-2.5 rounded-md text-sm font-semibold hover:opacity-90 transition-opacity"
             style={{ backgroundColor: "#1e3a5f" }}>
             Make a Request
           </button>

@@ -55,9 +55,10 @@ const OrphansContent = () => {
 						const imageSrc = project.cover_image || ThreeOrphans;
 						const goal = project.goal_amount ? Number(project.goal_amount) : 0;
 						return (
-							<div
+							<Link
 								key={project.id}
-								className="grid grid-cols-1 sm:grid-cols-2 gap-0 h-auto sm:min-h-96 rounded-lg overflow-hidden shadow-lg">
+								to={`/orphans/${encodeURIComponent(project.slug)}`}
+								className="grid grid-cols-1 sm:grid-cols-2 gap-0 h-auto sm:min-h-96 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
 								<div
 									className={`bg-gray-200 ${
 										index % 2 === 1 ? "order-2" : "order-1"
@@ -74,12 +75,8 @@ const OrphansContent = () => {
 											? "order-1 text-right pr-8"
 											: "order-2 pl-8"
 									}`}>
-									<h2 className="sm:text-5xl text-3xl font-bold mb-4 text-[#3A1700]">
-										<Link
-											to={`/orphans/${encodeURIComponent(project.slug)}`}
-											className="hover:text-[#00b6b7] transition-colors">
-											{project.title}
-										</Link>
+									<h2 className="sm:text-5xl text-3xl font-bold mb-4 text-[#3A1700] hover:text-[#00b6b7] transition-colors">
+										{project.title}
 									</h2>
 									<p className="sm:text-lg text-md leading-relaxed max-w-xl text-[#3A1700]/85 mb-6">
 										{project.summary}
@@ -102,21 +99,19 @@ const OrphansContent = () => {
 											value={project.donation_progress}
 											max={100}
 										/>
-									<div className="flex items-center gap-4 mt-1 flex-wrap">
-										<Link
-											to={`/orphans/${encodeURIComponent(project.slug)}`}
-											className="inline-flex items-center text-[#00CFD0] font-medium hover:underline">
-											Read more →
-										</Link>
-										<button
-											onClick={() => openModal("orphan", project.slug)}
-											className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
-											Donate
-										</button>
-									</div>
+										<div className="mt-1">
+											<button
+												onClick={(e) => {
+													e.preventDefault();
+													openModal("orphan", project.slug);
+												}}
+												className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
+												Donate
+											</button>
+										</div>
 									</div>
 								</div>
-							</div>
+							</Link>
 						);
 					})
 				)}
