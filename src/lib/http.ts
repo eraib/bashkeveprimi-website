@@ -1,4 +1,5 @@
 import axios from "axios";
+import i18n from "../i18n";
 
 export const API_BASE_URL =
 	import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
@@ -19,11 +20,16 @@ function getAccessToken(): string | null {
 }
 
 http.interceptors.request.use((config) => {
+	config.headers = config.headers ?? {};
+
 	const token = getAccessToken();
 	if (token) {
-		config.headers = config.headers ?? {};
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+
+	// Tells Django (django-modeltranslation / parler) which language to return
+	config.headers["Accept-Language"] = i18n.language ?? "sq";
+
 	return config;
 });
 

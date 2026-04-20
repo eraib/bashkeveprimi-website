@@ -4,6 +4,7 @@ import { menuitems } from "../constants/menuitems";
 import { toKebabCase } from "../utils/toKebabCase";
 import { BiChevronDown, BiX } from "react-icons/bi";
 import clsx from "clsx";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 type MobileMenuProps = {
 	isOpen: boolean;
@@ -49,9 +50,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         )}>
         {/* Header — height matches site header so X lines up with hamburger */}
         <div className="h-[68px] flex items-center justify-between px-4 border-b border-[#00CFD0]/20">
-          <span className="text-sm font-semibold uppercase tracking-widest text-[#00CFD0]">
-            Menu
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-semibold uppercase tracking-widest text-[#00CFD0]">
+              Menu
+            </span>
+            <LanguageSwitcher variant="drawer" />
+          </div>
           <button
             onClick={onClose}
             className="p-1.5 rounded hover:bg-[#00CFD0]/10 transition-colors">

@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "home": "Kryefaqja",
+    "programs": "Programet",
+    "orphans": "Jetimët",
+    "projects": "Projektet",
+    "aboutUs": "Rreth Nesh",
+    "contact": "Kontakti",
+    "makeRequest": "Bëj një Kërkesë",
+    "donateNow": "Dono Tani"
+  },
+  "contact": {
+    "title": "Na Kontaktoni",
+    "subtitle": "Keni pyetje ose dëshironi të angazhoheni? Na kontaktoni.",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Email",
+    "phone": "Telefon",
+    "message": "Mesazhi",
+    "send": "Dërgo Mesazhin",
+    "sending": "Duke dërguar...",
+    "successMessage": "Faleminderit! Mesazhi juaj është dërguar.",
+    "errorMessage": "Diçka shkoi keq. Ju lutemi provoni përsëri.",
+    "validation": {
+      "firstNameRequired": "Emri është i detyrueshëm.",
+      "lastNameRequired": "Mbiemri është i detyrueshëm.",
+      "emailRequired": "Email-i është i detyrueshëm.",
+      "emailInvalid": "Email i pavlefshëm.",
+      "messageRequired": "Mesazhi është i detyrueshëm."
+    }
+  },
+  "common": {
+    "learnMore": "Mëso Më Shumë",
+    "donate": "Dono",
+    "readMore": "Lexo Më Shumë",
+    "loading": "Duke ngarkuar...",
+    "error": "Diçka shkoi keq."
+  }
+}
