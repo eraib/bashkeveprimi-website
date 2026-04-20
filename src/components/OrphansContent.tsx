@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import ThreeOrphans from "../assets/images/three-orphans.svg";
 import LoadingBar from "./LoadingBar";
 import { useOrphanProjectsList } from "../lib/queries";
+import { useDonation } from "../lib/DonationContext";
 
 const OrphansContent = () => {
+	const { openModal } = useDonation();
 	const [page, setPage] = useState(1);
 	const { data, isLoading, isError, error } = useOrphanProjectsList({
 		page,
@@ -100,11 +102,18 @@ const OrphansContent = () => {
 											value={project.donation_progress}
 											max={100}
 										/>
+									<div className="flex items-center gap-4 mt-1 flex-wrap">
 										<Link
 											to={`/orphans/${encodeURIComponent(project.slug)}`}
-											className="inline-flex items-center justify-center sm:justify-start text-[#00CFD0] font-medium hover:underline mt-1">
+											className="inline-flex items-center text-[#00CFD0] font-medium hover:underline">
 											Read more →
 										</Link>
+										<button
+											onClick={() => openModal("orphan", project.slug)}
+											className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
+											Donate
+										</button>
+									</div>
 									</div>
 								</div>
 							</div>

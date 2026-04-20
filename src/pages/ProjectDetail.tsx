@@ -4,10 +4,12 @@ import Header from "../components/Header";
 import LoadingBar from "../components/LoadingBar";
 import WaterSupply from "../assets/images/water-suply.svg";
 import { useProjectDetail } from "../lib/queries";
+import { useDonation } from "../lib/DonationContext";
 
 function ProjectDetail() {
 	const { slug } = useParams<{ slug: string }>();
 	const { data, isLoading, isError, error } = useProjectDetail(slug);
+	const { openModal } = useDonation();
 
 	const formatCurrency = (amount: string) =>
 		Number(amount).toLocaleString("en-US");
@@ -71,19 +73,24 @@ function ProjectDetail() {
 								/>
 							)}
 
-							<div className="flex flex-col gap-4 mb-10 max-w-xl">
-								<div className="flex justify-between items-baseline gap-4 text-[#3A1700]">
-									<span className="text-xl font-medium">
-										{formatCurrency(data.total_donated)}€ raised
+						<div className="flex flex-col gap-4 mb-10 max-w-xl">
+							<div className="flex justify-between items-baseline gap-4 text-[#3A1700]">
+								<span className="text-xl font-medium">
+									{formatCurrency(data.total_donated)}€ raised
+								</span>
+								{goal > 0 && (
+									<span className="text-base text-[rgba(58,23,0,0.5)]">
+										{formatCurrency(String(goal))}€ goal
 									</span>
-									{goal > 0 && (
-										<span className="text-base text-[rgba(58,23,0,0.5)]">
-											{formatCurrency(String(goal))}€ goal
-										</span>
-									)}
-								</div>
-								<LoadingBar value={data.donation_progress} max={100} />
+								)}
 							</div>
+							<LoadingBar value={data.donation_progress} max={100} />
+							<button
+								onClick={() => openModal("project", data.slug)}
+								className="mt-2 bg-[#00CFD0] text-white font-bold px-8 py-3 rounded-full hover:bg-[#00b6b7] transition w-fit">
+								Donate to This Project
+							</button>
+						</div>
 
 							<div
 								className="max-w-none text-[#3A1700] space-y-4 [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:text-2xl [&_h2]:font-semibold [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-6 [&_a]:text-[#00CFD0] [&_img]:max-w-full [&_img]:rounded-lg"
