@@ -165,27 +165,6 @@ export async function getOrphanProjectBySlug(
 	return data;
 }
 
-export type RequestType = "orphan" | "family" | "volunteer" | "other";
-
-export type HelpRequestPayload = {
-	request_type: RequestType;
-	full_name: string;
-	phone: string;
-	email?: string;
-	details: Record<string, string | number>;
-};
-
-export type HelpRequestResponse = {
-	message: string;
-};
-
-export async function submitHelpRequest(
-	payload: HelpRequestPayload
-): Promise<HelpRequestResponse> {
-	const { data } = await http.post<HelpRequestResponse>("/requests/", payload);
-	return data;
-}
-
 export type CheckoutSessionRequest = {
 	amount_eur_cents: number;
 	designation_type?: DesignationType;
