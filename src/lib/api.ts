@@ -200,6 +200,39 @@ export type ContactMessageResponse = {
 	phone?: string;
 };
 
+export type AboutStat = {
+	id: number;
+	value: string;
+	label: string;
+	order: number;
+};
+
+export type AboutPage = {
+	hero_title: string;
+	hero_subtitle: string;
+	hero_image: string | null;
+	stats: AboutStat[];
+	cta_title: string;
+	cta_link_text: string;
+	cta_url: string;
+	support_title: string;
+	support_body: string;
+	support_image: string | null;
+	org_title: string;
+	mission_text: string;
+	vision_text: string;
+	values_text: string;
+	org_image_1: string | null;
+	org_image_2: string | null;
+	video_title: string;
+	video_url: string | null;
+};
+
+export async function getAboutPage(): Promise<AboutPage> {
+	const { data } = await http.get<AboutPage>("/about/");
+	return data;
+}
+
 export async function submitContactMessage(
 	payload: ContactMessagePayload
 ): Promise<ContactMessageResponse> {

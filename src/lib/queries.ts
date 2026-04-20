@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
 	donationsApi,
+	getAboutPage,
 	getCauses,
 	getOrganizationCurrent,
 	getOrphanProjectBySlug,
@@ -13,6 +14,13 @@ import {
 	type ContactMessagePayload,
 	type HelpRequestPayload,
 } from "./api";
+
+export function useAboutPage() {
+	return useQuery({
+		queryKey: ["about"],
+		queryFn: getAboutPage,
+	});
+}
 
 export function useOrganizationCurrent() {
 	return useQuery({
