@@ -9,6 +9,7 @@ import DonationSuccess from "../pages/DonationSuccess";
 import DonationCancel from "../pages/DonationCancel";
 import ProjectDetail from "../pages/ProjectDetail";
 import OrphanDetail from "../pages/OrphanDetail";
+import Contact from "../pages/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
       { path: "projects/:slug", element: <ProjectDetail /> },
       { path: "requests", element: <Requests /> },
       { path: "about-us", element: <AboutUs /> },
+      { path: "contact", element: <Contact /> },
       { path: "donation/success", element: <DonationSuccess /> },
       { path: "donation/cancel", element: <DonationCancel /> },
     ],

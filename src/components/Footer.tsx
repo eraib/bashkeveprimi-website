@@ -1,30 +1,87 @@
-import logo from "../assets/icons/logo.svg"
+import { Link } from "react-router-dom";
+import logo from "../assets/icons/logo.svg";
 import { useOrganizationCurrent } from "../lib/queries";
 
 export const Footer = () => {
 	const { data: organization } = useOrganizationCurrent();
+	const orgName = organization?.name || "Organizata Bashkeveprimi";
+	const orgPhone = organization?.phone || "+38345 111 222";
+	const orgAddress = organization?.address || "Kosove, Gjilan";
+	const orgEmail = organization?.email || "bashkeveprimi@gmail.com";
 
 	return (
 		<footer className="bg-gray-900 text-white" id="footer-id">
-			<div className="flex flex-col sm:flex-row sm:px-12 px-4 bg-[#ffffff19] py-6 sm:py-7 gap-6 sm:gap-0">
-				{/* You can add footer content here later */}
-				<div className="flex-1">
-					<div className="flex items-center gap-2 sm:gap-3">
-						<img src={logo} alt="" className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
-						<p className="text-[#ffffff] break-normal max-w-32 sm:max-w-40 text-xs sm:text-sm md:text-base">{organization?.name || "Organizata Bashkeveprimi"}</p>
+			<div className="bg-[#ffffff19] px-4 py-8 sm:px-12">
+				<div className="grid gap-8 md:grid-cols-3">
+					<div>
+						<div className="flex items-center gap-2 sm:gap-3">
+							<img
+								src={logo}
+								alt={`${orgName} logo`}
+								className="h-8 w-8 sm:h-10 sm:w-10"
+							/>
+							<p className="max-w-44 text-sm font-semibold text-white sm:text-base">
+								{orgName}
+							</p>
+						</div>
+						<p className="mt-3 text-sm leading-relaxed text-white/80">
+							Supporting families, children, and communities with practical help
+							and long-term impact.
+						</p>
 					</div>
-					<div className="mt-3 sm:mt-4">
-						<p className="text-xs sm:text-sm md:text-base">Phone: {organization?.phone || "+38345 111 222"}</p>
-						<p className="text-xs sm:text-sm md:text-base mt-1 sm:mt-2">Address: {organization?.address || "Kosove, Gjilan"}</p>
-						<p className="text-xs sm:text-sm md:text-base">{organization?.email || "bashkeveprimi@gmail.com"}</p>
+
+					<div>
+						<h3 className="text-sm font-semibold uppercase tracking-wide text-white/90">
+							Quick Links
+						</h3>
+						<div className="mt-3 flex flex-col gap-2 text-sm text-white/85">
+							<Link to="/" className="transition hover:text-[#00CFD0]">
+								Home
+							</Link>
+							<Link to="/about-us" className="transition hover:text-[#00CFD0]">
+								About Us
+							</Link>
+							<Link to="/orphans" className="transition hover:text-[#00CFD0]">
+								Orphans
+							</Link>
+							<Link to="/projects" className="transition hover:text-[#00CFD0]">
+								Projects
+							</Link>
+							<Link to="/requests" className="transition hover:text-[#00CFD0]">
+								Requests
+							</Link>
+							<Link to="/contact" className="transition hover:text-[#00CFD0]">
+								Contact
+							</Link>
+						</div>
+					</div>
+
+					<div>
+						<h3 className="text-sm font-semibold uppercase tracking-wide text-white/90">
+							Contact
+						</h3>
+						<div className="mt-3 flex flex-col gap-2 text-sm text-white/85">
+							<a
+								href={`tel:${orgPhone.replace(/\s/g, "")}`}
+								className="transition hover:text-[#00CFD0]">
+								Phone: {orgPhone}
+							</a>
+							<a
+								href={`mailto:${orgEmail}`}
+								className="break-all transition hover:text-[#00CFD0]">
+								Email: {orgEmail}
+							</a>
+							<p>Address: {orgAddress}</p>
+						</div>
 					</div>
 				</div>
-				<div className="flex-1">
-					<p className="text-xs sm:text-sm md:text-base">About Us</p>
-					<p className="text-xs sm:text-sm md:text-base mt-1 sm:mt-2">Contact Us</p>
+
+				<div className="mt-8 border-t border-white/20 pt-4 text-xs text-white/65 sm:text-sm">
+					<p>
+						© {new Date().getFullYear()} {orgName}. All rights reserved.
+					</p>
 				</div>
 			</div>
-			
 		</footer>
 	);
 };

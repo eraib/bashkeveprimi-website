@@ -14,6 +14,5 @@ export const menuitems: MenuItem[] = [
 		],
 	},
 	{ title: "About Us" },
-	{ title: "Support" },
-	{ title: "Emergency" },
+	{ title: "Contact" },
 ];

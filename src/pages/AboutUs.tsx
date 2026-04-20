@@ -4,9 +4,8 @@ import OrganizationInfo from "../components/OrganizationInfo";
 import SupportThoseWhoNeed from "../components/SupportThoseWhoNeed";
 import WhoAreWe from "../components/WhoWeAreStats";
 import AboutVideoDescription from "../components/AboutVideoDescription";
-import ContactUs from "../components/ContactUs";
 import AboutUsBackground from "../components/AboutUsBackground";
-import GetInTouch from "../components/GetInTouch";
+import ContactUs from "../components/ContactUs";
 
 function AboutUs() {
   return (
@@ -18,7 +17,6 @@ function AboutUs() {
         <SupportThoseWhoNeed />
         <OrganizationInfo />
         <AboutVideoDescription />
-        <GetInTouch />
         <ContactUs />
       </main>
 
