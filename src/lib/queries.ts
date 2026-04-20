@@ -7,9 +7,7 @@ import {
 	getOrphanProjects,
 	getProjectBySlug,
 	getProjects,
-	submitHelpRequest,
 	type CheckoutSessionRequest,
-	type HelpRequestPayload,
 } from "./api";
 
 export function useOrganizationCurrent() {
@@ -83,12 +81,6 @@ export function useCreateCheckoutSession() {
 	return useMutation({
 		mutationFn: (payload: CheckoutSessionRequest) =>
 			donationsApi.createCheckoutSession(payload),
-	});
-}
-
-export function useSubmitHelpRequest() {
-	return useMutation({
-		mutationFn: (payload: HelpRequestPayload) => submitHelpRequest(payload),
 	});
 }
 
