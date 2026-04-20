@@ -10,7 +10,6 @@ export const menuitems: MenuItem[] = [
 		submenus: [
 			{ title: "Orphans" },
 			{ title: "Projects" },
-			{ title: "Requests" },
 		],
 	},
 	{ title: "About Us" },

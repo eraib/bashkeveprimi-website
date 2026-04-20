@@ -3,7 +3,7 @@ import { toKebabCase } from "../utils/toKebabCase";
 import type { MenuItem } from "../constants/menuitems";
 import { BiChevronDown } from "react-icons/bi";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isSubMenuActive } from "../utils/isSubMenuActive";
 
 type NavbarProps = {
@@ -12,34 +12,46 @@ type NavbarProps = {
 
 const Navbar = ({ menuitems }: NavbarProps) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = (title: string) => {
     setOpenDropdown((prev) => (prev === title ? null : title));
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="hidden md:flex gap-4 lg:gap-6 flex-row bg-[#F3F2E7] items-center">
+    <div
+      ref={ref}
+      className="hidden md:flex gap-4 lg:gap-6 flex-row bg-[#F3F2E7] items-center">
       {menuitems.map((menuitem) => (
         <div key={menuitem.title} className="relative flex flex-col">
           <div className="flex items-center gap-1">
             {menuitem.submenus ? (
-              <div
+              <button
                 onClick={() => toggleDropdown(menuitem.title)}
                 className={clsx(
-                  "cursor-pointer text-black whitespace-nowrap opacity-50 hover:text-black/50 flex items-center gap-1 transition-colors duration-150",
+                  "cursor-pointer text-black/50 whitespace-nowrap flex items-center gap-0.5 transition-all duration-150 hover:text-black/70",
                   (isSubMenuActive(menuitem) ||
                     openDropdown === menuitem.title) &&
-                    "border-b border-black/80 opacity-80"
+                    "text-black/80"
                 )}>
                 {menuitem.title}
                 <BiChevronDown
                   className={clsx(
-                    "w-5 h-5 transition-transform duration-200",
-                    openDropdown === menuitem.title && "rotate-180",
-                    "text-black opacity-50"
+                    "w-4 h-4 transition-transform duration-200",
+                    openDropdown === menuitem.title && "rotate-180"
                   )}
                 />
-              </div>
+              </button>
             ) : (
               <NavLink
                 to={
@@ -50,8 +62,8 @@ const Navbar = ({ menuitems }: NavbarProps) => {
                 {({ isActive }) => (
                   <span
                     className={clsx(
-                      "text-black opacity-50 hover:text-black/50 whitespace-nowrap transition-colors duration-150",
-                      isActive && "border-b border-black/80 opacity-80"
+                      "text-black/50 hover:text-black/70 whitespace-nowrap transition-colors duration-150",
+                      isActive && "text-black/80"
                     )}>
                     {menuitem.title}
                   </span>
@@ -60,22 +72,49 @@ const Navbar = ({ menuitems }: NavbarProps) => {
             )}
           </div>
 
-          {menuitem.submenus && openDropdown === menuitem.title && (
-            <div className="mt-1 -ml-2 flex-col bg-[#fdfdfd] px-8 py-[15px] rounded-[4px] flex items-center gap-3 absolute top-full left-0 z-20 min-w-[150px]">
-              {menuitem.submenus.map((sub) => (
-                <NavLink
-                  key={sub.title}
-                  to={`/${toKebabCase(sub.title)}`}
-                  onClick={() => setOpenDropdown(null)}
-                  className={({ isActive }) =>
-                    clsx(
-                      "text-[#7f7f7f] text-[16px] text-center py-[5px] transition-colors duration-150",
-                      isActive && "text-[#7f7f7f]"
-                    )
-                  }>
-                  {sub.title}
-                </NavLink>
-              ))}
+          {menuitem.submenus && (
+            <div
+              className={clsx(
+                "absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2 z-20 min-w-[160px]",
+                "origin-top transition-all duration-200",
+                openDropdown === menuitem.title
+                  ? "opacity-100 scale-y-100 pointer-events-auto"
+                  : "opacity-0 scale-y-95 pointer-events-none"
+              )}>
+              {/* arrow */}
+              <div className="flex justify-center">
+                <div className="w-2.5 h-2.5 rotate-45 bg-white border-l border-t border-[#00CFD0]/20 -mb-[5px] relative z-10" />
+              </div>
+              <div className="bg-white border border-[#00CFD0]/20 rounded-xl shadow-lg shadow-black/5 overflow-hidden">
+                {menuitem.submenus.map((sub, i) => (
+                  <NavLink
+                    key={sub.title}
+                    to={`/${toKebabCase(sub.title)}`}
+                    onClick={() => setOpenDropdown(null)}
+                    className={({ isActive }) =>
+                      clsx(
+                        "flex items-center gap-2 px-5 py-3 text-sm transition-colors duration-150",
+                        "hover:bg-[#F3F2E7] hover:text-[#00CFD0]",
+                        isActive
+                          ? "text-[#00CFD0] font-medium bg-[#F3F2E7]/60"
+                          : "text-black/60",
+                        i !== 0 && "border-t border-black/5"
+                      )
+                    }>
+                    {({ isActive }) => (
+                      <>
+                        <span
+                          className={clsx(
+                            "w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-150",
+                            isActive ? "bg-[#00CFD0]" : "bg-black/20"
+                          )}
+                        />
+                        {sub.title}
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
             </div>
           )}
         </div>

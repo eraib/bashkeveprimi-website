@@ -1,15 +1,10 @@
-import { useState, useEffect } from 'react';
-import { IoClose } from 'react-icons/io5';
-import { FaHeart, FaChild, FaHandHoldingHeart, FaGlobe } from 'react-icons/fa';
-import { useCreateCheckoutSession } from '../lib/queries';
-import clsx from 'clsx';
-
-interface DonationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-type DesignationType = 'general' | 'cause' | 'orphan' | 'project';
+import { useState, useEffect } from "react";
+import { IoClose } from "react-icons/io5";
+import { FaHeart, FaChild, FaHandHoldingHeart, FaGlobe } from "react-icons/fa";
+import { useCreateCheckoutSession } from "../lib/queries";
+import { useDonation } from "../lib/DonationContext";
+import type { DesignationType } from "../lib/api";
+import clsx from "clsx";
 
 interface DesignationOption {
   type: DesignationType;
@@ -20,122 +15,143 @@ interface DesignationOption {
 
 const designationOptions: DesignationOption[] = [
   {
-    type: 'general',
-    label: 'General Fund',
+    type: "general",
+    label: "General Fund",
     icon: <FaGlobe className="w-6 h-6" />,
-    description: 'Support where needed most',
+    description: "Support where needed most",
   },
   {
-    type: 'orphan',
-    label: 'Orphan Care',
+    type: "orphan",
+    label: "Orphan Care",
     icon: <FaChild className="w-6 h-6" />,
-    description: 'Help children in need',
+    description: "Help children in need",
   },
   {
-    type: 'cause',
-    label: 'Active Causes',
+    type: "cause",
+    label: "Active Causes",
     icon: <FaHeart className="w-6 h-6" />,
-    description: 'Contribute to ongoing campaigns',
+    description: "Contribute to ongoing campaigns",
   },
   {
-    type: 'project',
-    label: 'Projects',
+    type: "project",
+    label: "Projects",
     icon: <FaHandHoldingHeart className="w-6 h-6" />,
-    description: 'Support specific initiatives',
+    description: "Support specific initiatives",
   },
 ];
 
 const presetAmounts = [10, 25, 50, 100, 250, 500];
 
-const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
+const DonationModal = () => {
+  const { isOpen, initialDesignation, initialSlug, closeModal } = useDonation();
   const createCheckoutSession = useCreateCheckoutSession();
-  const [step, setStep] = useState<'amount' | 'details' | 'processing'>('amount');
+
+  const [step, setStep] = useState<"amount" | "details">("amount");
   const [selectedAmount, setSelectedAmount] = useState<number | null>(50);
-  const [customAmount, setCustomAmount] = useState('');
-  const [designation, setDesignation] = useState<DesignationType>('general');
-  const [donorEmail, setDonorEmail] = useState('');
-  const [donorName, setDonorName] = useState('');
+  const [customAmount, setCustomAmount] = useState("");
+  const [designation, setDesignation] = useState<DesignationType>("general");
+  const [designationSlug, setDesignationSlug] = useState<string | undefined>(undefined);
+  const [donorEmail, setDonorEmail] = useState("");
+  const [donorName, setDonorName] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isLoading = createCheckoutSession.isPending;
+
+  // Sync designation + slug every time the modal is opened
+  useEffect(() => {
+    if (isOpen) {
+      setDesignation(initialDesignation);
+      setDesignationSlug(initialSlug);
+      setStep("amount");
+      setSelectedAmount(50);
+      setCustomAmount("");
+      setError(null);
+    }
+  }, [isOpen, initialDesignation, initialSlug]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   const effectiveAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
 
   const handleAmountSelect = (amount: number) => {
     setSelectedAmount(amount);
-    setCustomAmount('');
+    setCustomAmount("");
   };
 
   const handleCustomAmountChange = (value: string) => {
-    // Only allow numbers and decimal point
-    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+    if (value === "" || /^\d*\.?\d{0,2}$/.test(value)) {
       setCustomAmount(value);
       setSelectedAmount(null);
     }
   };
 
+  const handleDesignationChange = (type: DesignationType) => {
+    setDesignation(type);
+    // Clear slug if user switches away from the originally-linked type
+    if (type !== initialDesignation) {
+      setDesignationSlug(undefined);
+    } else {
+      setDesignationSlug(initialSlug);
+    }
+  };
+
   const handleProceedToDetails = () => {
     if (!effectiveAmount || effectiveAmount < 1) {
-      setError('Please enter a minimum donation of €1');
+      setError("Please enter a minimum donation of €1");
       return;
     }
     setError(null);
-    setStep('details');
+    setStep("details");
   };
 
   const handleDonate = async () => {
     if (!effectiveAmount) return;
-    
     setError(null);
 
     try {
       const baseUrl = window.location.origin;
-      
       const response = await createCheckoutSession.mutateAsync({
         amount_eur_cents: Math.round(effectiveAmount * 100),
         designation_type: designation,
+        designation_slug: designationSlug,
         donor_email: donorEmail || undefined,
         donor_full_name: donorName || undefined,
         is_anonymous: isAnonymous,
-        success_url: `${baseUrl}/donation/success`,
+        // {CHECKOUT_SESSION_ID} is replaced by Stripe with the actual session id
+        success_url: `${baseUrl}/donation/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${baseUrl}/donation/cancel`,
       });
 
-      // Redirect to Stripe Checkout
       window.location.href = response.checkout_url;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
     }
   };
 
   const handleClose = () => {
-    setStep('amount');
+    setStep("amount");
     setError(null);
-    onClose();
+    closeModal();
   };
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 overflow-y-auto">
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/70 backdrop-blur-sm"
         onClick={handleClose}
       />
-      
+
       {/* Modal */}
       <div className="relative bg-gradient-to-br from-[#F3F2E7] to-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden my-8 z-10 max-h-[90vh] flex flex-col">
         {/* Header */}
@@ -152,7 +168,7 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
 
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-1">
-          {step === 'amount' && (
+          {step === "amount" && (
             <div className="space-y-6">
               {/* Designation Selection */}
               <div>
@@ -163,25 +179,40 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                   {designationOptions.map((option) => (
                     <button
                       key={option.type}
-                      onClick={() => setDesignation(option.type)}
+                      onClick={() => handleDesignationChange(option.type)}
                       className={clsx(
-                        'p-4 rounded-xl border-2 transition-all text-left',
+                        "p-4 rounded-xl border-2 transition-all text-left",
                         designation === option.type
-                          ? 'border-[#00CFD0] bg-[#00CFD0]/10'
-                          : 'border-gray-200 hover:border-[#00CFD0]/50'
+                          ? "border-[#00CFD0] bg-[#00CFD0]/10"
+                          : "border-gray-200 hover:border-[#00CFD0]/50"
                       )}
                     >
-                      <div className={clsx(
-                        'mb-2',
-                        designation === option.type ? 'text-[#00CFD0]' : 'text-gray-500'
-                      )}>
+                      <div
+                        className={clsx(
+                          "mb-2",
+                          designation === option.type
+                            ? "text-[#00CFD0]"
+                            : "text-gray-500"
+                        )}
+                      >
                         {option.icon}
                       </div>
-                      <div className="font-medium text-gray-900">{option.label}</div>
-                      <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                      <div className="font-medium text-gray-900">
+                        {option.label}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {option.description}
+                      </div>
                     </button>
                   ))}
                 </div>
+
+                {/* Show item name when a specific slug is linked */}
+                {designationSlug && (
+                  <p className="mt-2 text-xs text-[#00CFD0] font-medium">
+                    Donating to: <span className="font-semibold">{designationSlug}</span>
+                  </p>
+                )}
               </div>
 
               {/* Amount Selection */}
@@ -195,10 +226,10 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                       key={amount}
                       onClick={() => handleAmountSelect(amount)}
                       className={clsx(
-                        'py-3 px-4 rounded-xl font-bold text-lg transition-all',
+                        "py-3 px-4 rounded-xl font-bold text-lg transition-all",
                         selectedAmount === amount
-                          ? 'bg-[#00CFD0] text-white shadow-lg scale-105'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? "bg-[#00CFD0] text-white shadow-lg scale-105"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                       )}
                     >
                       €{amount}
@@ -223,10 +254,10 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                     value={customAmount}
                     onChange={(e) => handleCustomAmountChange(e.target.value)}
                     className={clsx(
-                      'w-full pl-10 pr-4 py-3 rounded-xl border-2 text-lg font-medium transition-all text-gray-900 placeholder:text-gray-400',
+                      "w-full pl-10 pr-4 py-3 rounded-xl border-2 text-lg font-medium transition-all text-gray-900 placeholder:text-gray-400",
                       customAmount
-                        ? 'border-[#00CFD0] ring-2 ring-[#00CFD0]/20'
-                        : 'border-gray-200 focus:border-[#00CFD0] focus:ring-2 focus:ring-[#00CFD0]/20'
+                        ? "border-[#00CFD0] ring-2 ring-[#00CFD0]/20"
+                        : "border-gray-200 focus:border-[#00CFD0] focus:ring-2 focus:ring-[#00CFD0]/20"
                     )}
                   />
                 </div>
@@ -238,52 +269,62 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 </div>
               )}
 
-              {/* Continue Button */}
               <button
                 onClick={handleProceedToDetails}
                 disabled={!effectiveAmount}
                 className={clsx(
-                  'w-full py-4 rounded-xl font-bold text-lg transition-all',
+                  "w-full py-4 rounded-xl font-bold text-lg transition-all",
                   effectiveAmount
-                    ? 'bg-[#00CFD0] text-white hover:bg-[#00b6b7] shadow-lg hover:shadow-xl'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    ? "bg-[#00CFD0] text-white hover:bg-[#00b6b7] shadow-lg hover:shadow-xl"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 )}
               >
-                {effectiveAmount ? `Continue with €${effectiveAmount.toFixed(2)}` : 'Select an amount'}
+                {effectiveAmount
+                  ? `Continue with €${effectiveAmount.toFixed(2)}`
+                  : "Select an amount"}
               </button>
             </div>
           )}
 
-          {step === 'details' && (
+          {step === "details" && (
             <div className="space-y-6">
               {/* Amount Summary */}
               <div className="p-4 bg-[#00CFD0]/10 rounded-xl border border-[#00CFD0]/30">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Donation Amount</span>
-                  <span className="text-2xl font-bold text-[#00CFD0]">€{effectiveAmount?.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-[#00CFD0]">
+                    €{effectiveAmount?.toFixed(2)}
+                  </span>
                 </div>
                 <div className="text-sm text-gray-500 mt-1">
-                  {designationOptions.find(d => d.type === designation)?.label}
+                  {designationOptions.find((d) => d.type === designation)?.label}
+                  {designationSlug && (
+                    <span className="ml-1 text-[#00CFD0]">· {designationSlug}</span>
+                  )}
                 </div>
               </div>
 
               {/* Anonymous Toggle */}
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                 <div>
-                  <div className="font-medium text-gray-900">Donate Anonymously</div>
-                  <div className="text-sm text-gray-500">Your name won't be displayed publicly</div>
+                  <div className="font-medium text-gray-900">
+                    Donate Anonymously
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Your name won't be displayed publicly
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsAnonymous(!isAnonymous)}
                   className={clsx(
-                    'w-12 h-6 rounded-full transition-colors relative',
-                    isAnonymous ? 'bg-[#00CFD0]' : 'bg-gray-300'
+                    "w-12 h-6 rounded-full transition-colors relative",
+                    isAnonymous ? "bg-[#00CFD0]" : "bg-gray-300"
                   )}
                 >
                   <div
                     className={clsx(
-                      'absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform',
-                      isAnonymous ? 'translate-x-6' : 'translate-x-0.5'
+                      "absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform",
+                      isAnonymous ? "translate-x-6" : "translate-x-0.5"
                     )}
                   />
                 </button>
@@ -325,10 +366,9 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex gap-3">
                 <button
-                  onClick={() => setStep('amount')}
+                  onClick={() => setStep("amount")}
                   className="flex-1 py-4 rounded-xl font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition"
                 >
                   Back
@@ -337,17 +377,29 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                   onClick={handleDonate}
                   disabled={isLoading}
                   className={clsx(
-                    'flex-2 py-4 px-6 rounded-xl font-bold text-white transition-all flex items-center justify-center gap-2',
+                    "flex-2 py-4 px-6 rounded-xl font-bold text-white transition-all flex items-center justify-center gap-2",
                     isLoading
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-[#00CFD0] hover:bg-[#00b6b7] shadow-lg hover:shadow-xl'
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#00CFD0] hover:bg-[#00b6b7] shadow-lg hover:shadow-xl"
                   )}
                 >
                   {isLoading ? (
                     <>
                       <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
                       </svg>
                       Processing...
                     </>

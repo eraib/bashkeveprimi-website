@@ -3,13 +3,13 @@ import littleOrphan from "../assets/images/little-orphan.svg";
 import lineCircle from "../assets/icons/line-circle.svg";
 import squiggle from "../assets/icons/squiggle.svg";
 import { useProjectsList } from "../lib/queries";
-import { useNavigate } from "react-router-dom";
+import { useDonation } from "../lib/DonationContext";
 
 export default function PeriodicActions() {
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const currentIndexRef = useRef(0);
-  const navigate = useNavigate();
+  const { openModal } = useDonation();
 
   const { data } = useProjectsList({
     ordering: "-created_at",
@@ -20,6 +20,7 @@ export default function PeriodicActions() {
   const items =
     data?.results?.slice(0, 5).map((project) => ({
       id: project.id,
+      slug: project.slug,
       title: project.title,
       slogan: "Change a Life.",
       description: project.summary,
@@ -28,6 +29,7 @@ export default function PeriodicActions() {
     [
       {
         id: 1,
+        slug: undefined as string | undefined,
         title: "Give package",
         slogan: "Change a Life.",
         description:
@@ -153,11 +155,11 @@ export default function PeriodicActions() {
 										{item.description}
 									</p>
 								</div>
-								<button
-									onClick={() => navigate("/")}
-									className="bg-[#00CFD0] text-white text-[14px] uppercase py-3 px-8 rounded-[24px] w-full sm:w-[202px] h-[48px] flex items-center justify-center hover:bg-[#00b6b7] transition font-bold">
-									Make A Donation
-								</button>
+							<button
+								onClick={() => openModal("project", item.slug)}
+								className="bg-[#00CFD0] text-white text-[14px] uppercase py-3 px-8 rounded-[24px] w-full sm:w-[202px] h-[48px] flex items-center justify-center hover:bg-[#00b6b7] transition font-bold">
+								Make A Donation
+							</button>
 							</div>
 						</div>
 

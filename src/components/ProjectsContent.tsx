@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import WaterSupply from "../assets/images/water-suply.svg";
 import LoadingBar from "./LoadingBar";
 import { useProjectsList } from "../lib/queries";
+import { useDonation } from "../lib/DonationContext";
 
 const ProjectsContent = () => {
+	const { openModal } = useDonation();
 	const [page, setPage] = useState(1);
 	const { data, isLoading, isError, error } = useProjectsList({
 		page,
@@ -107,11 +109,18 @@ const ProjectsContent = () => {
 											value={project.donation_progress}
 											max={100}
 										/>
+									<div className="flex items-center gap-4 mt-1 flex-wrap">
 										<Link
 											to={`/projects/${project.slug}`}
-											className="inline-flex items-center justify-center sm:justify-start text-[#00CFD0] font-medium hover:underline mt-1">
+											className="inline-flex items-center text-[#00CFD0] font-medium hover:underline">
 											Read more →
 										</Link>
+										<button
+											onClick={() => openModal("project", project.slug)}
+											className="bg-[#00CFD0] text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-[#00b6b7] transition">
+											Donate
+										</button>
+									</div>
 									</div>
 								</div>
 							</div>

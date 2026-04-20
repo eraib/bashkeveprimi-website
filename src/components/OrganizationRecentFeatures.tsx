@@ -3,8 +3,10 @@ import ThreeOrphans from "../assets/images/three-orphans.svg";
 import WaterSupply from "../assets/images/water-suply.svg";
 import LoadingBar from "./LoadingBar";
 import { useCausesList } from "../lib/queries";
+import { useDonation } from "../lib/DonationContext";
 
 export const OrganizationRecentFeatures = () => {
+  const { openModal } = useDonation();
   const formatCurrency = (amount: string) => {
     return Number(amount).toLocaleString("en-US");
   };
@@ -22,6 +24,7 @@ export const OrganizationRecentFeatures = () => {
 
     return {
       id: cause.id,
+      slug: cause.slug,
       title: cause.title,
       demandedAmount,
       collectedAmount,
@@ -111,7 +114,9 @@ export const OrganizationRecentFeatures = () => {
               />
             </div>
 
-            <button className="bg-[#00CFD0] h-[48px] w-[202px] rounded-[24px] text-white font-['Rowdies'] font-normal text-[14px] uppercase flex items-center justify-center hover:bg-[#00b6b7] transition duration-300">
+            <button
+              onClick={() => openModal("cause", item.slug)}
+              className="bg-[#00CFD0] h-[48px] w-[202px] rounded-[24px] text-white font-['Rowdies'] font-normal text-[14px] uppercase flex items-center justify-center hover:bg-[#00b6b7] transition duration-300">
               Make A Donation
             </button>
           </div>
