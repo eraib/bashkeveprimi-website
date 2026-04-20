@@ -56,7 +56,6 @@ const GetInTouch = () => {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
       nextErrors.email = "Invalid email.";
     }
-    if (!values.phone.trim()) nextErrors.phone = "Phone is required.";
     if (!values.message.trim()) nextErrors.message = "Message is required.";
 
     setErrors(nextErrors);
