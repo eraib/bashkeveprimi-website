@@ -186,6 +186,60 @@ export async function submitHelpRequest(
 	return data;
 }
 
+export type ContactMessagePayload = {
+	full_name: string;
+	email: string;
+	phone: string;
+	message: string;
+};
+
+export type ContactMessageResponse = {
+	message?: string;
+	full_name?: string;
+	email?: string;
+	phone?: string;
+};
+
+export type AboutStat = {
+	id: number;
+	value: string;
+	label: string;
+	order: number;
+};
+
+export type AboutPage = {
+	hero_title: string;
+	hero_subtitle: string;
+	hero_image: string | null;
+	stats: AboutStat[];
+	cta_title: string;
+	cta_link_text: string;
+	cta_url: string;
+	support_title: string;
+	support_body: string;
+	support_image: string | null;
+	org_title: string;
+	mission_text: string;
+	vision_text: string;
+	values_text: string;
+	org_image_1: string | null;
+	org_image_2: string | null;
+	video_title: string;
+	video_url: string | null;
+};
+
+export async function getAboutPage(): Promise<AboutPage> {
+	const { data } = await http.get<AboutPage>("/about/");
+	return data;
+}
+
+export async function submitContactMessage(
+	payload: ContactMessagePayload
+): Promise<ContactMessageResponse> {
+	const { data } = await http.post<ContactMessageResponse>("/contact/", payload);
+	return data;
+}
+
 export type CheckoutSessionRequest = {
 	amount_eur_cents: number;
 	designation_type?: DesignationType;

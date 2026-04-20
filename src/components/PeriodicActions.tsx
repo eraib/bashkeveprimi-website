@@ -2,27 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import littleOrphan from "../assets/images/little-orphan.svg";
 import lineCircle from "../assets/icons/line-circle.svg";
 import squiggle from "../assets/icons/squiggle.svg";
-import { useCausesList } from "../lib/queries";
+import { useProjectsList } from "../lib/queries";
 import { useNavigate } from "react-router-dom";
 
 export default function PeriodicActions() {
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const currentIndexRef = useRef(0);
   const navigate = useNavigate();
 
-  const { data } = useCausesList({
+  const { data } = useProjectsList({
     ordering: "-created_at",
     is_active: true,
     page: 1,
   });
 
   const items =
-    data?.results?.slice(0, 4).map((cause) => ({
-      id: cause.id,
-      title: cause.title,
+    data?.results?.slice(0, 5).map((project) => ({
+      id: project.id,
+      title: project.title,
       slogan: "Change a Life.",
-      description: cause.summary,
-      image: cause.cover_image || littleOrphan,
+      description: project.summary,
+      image: project.cover_image || littleOrphan,
     })) ??
     [
       {
@@ -39,36 +40,47 @@ export default function PeriodicActions() {
 		const slider = sliderRef.current;
 		if (!slider) return;
 
-		let index = 0;
 		const slideCount = items.length;
 
-		const interval = setInterval(() => {
-			index = (index + 1) % slideCount;
-			const nextSlide = slider.children[index] as HTMLElement;
-
+	const startInterval = () =>
+		setInterval(() => {
+			const nextIndex = currentIndexRef.current + 1;
+			if (nextIndex >= slideCount) return;
 			slider.scrollTo({
-				left: nextSlide.offsetLeft,
+				left: nextIndex * slider.clientWidth,
 				behavior: "smooth",
 			});
-			setCurrentIndex(index);
+			currentIndexRef.current = nextIndex;
+			setCurrentIndex(nextIndex);
 		}, 3000);
 
-		// Track scroll position to update currentIndex
+		let intervalId = startInterval();
+		let scrollResetTimer: ReturnType<typeof setTimeout>;
+
 		const handleScroll = () => {
-			const scrollLeft = slider.scrollLeft;
-			const slideWidth = slider.children[0]?.clientWidth || 0;
+			const slideWidth = slider.clientWidth;
 			if (slideWidth > 0) {
-				const newIndex = Math.round(scrollLeft / slideWidth);
-				if (newIndex < items.length) {
-					setCurrentIndex((prev) => (prev !== newIndex ? newIndex : prev));
+				const newIndex = Math.round(slider.scrollLeft / slideWidth);
+				if (newIndex < slideCount && newIndex !== currentIndexRef.current) {
+					currentIndexRef.current = newIndex;
+					setCurrentIndex(newIndex);
 				}
 			}
+
+			// Reset the auto-advance timer on every manual scroll so it
+			// doesn't fire immediately after the user finishes swiping.
+			clearInterval(intervalId);
+			clearTimeout(scrollResetTimer);
+			scrollResetTimer = setTimeout(() => {
+				intervalId = startInterval();
+			}, 3000);
 		};
 
 		slider.addEventListener("scroll", handleScroll);
 
 		return () => {
-			clearInterval(interval);
+			clearInterval(intervalId);
+			clearTimeout(scrollResetTimer);
 			slider.removeEventListener("scroll", handleScroll);
 		};
 	}, [items.length]);
@@ -104,21 +116,28 @@ export default function PeriodicActions() {
 
 			{/* Pagination dots */}
 			<div className="absolute top-4 left-4 md:top-[48px] md:left-[98px] flex gap-2 items-center z-50">
-				{items.map((_, index) => (
-					<div
-						key={index}
-						className={`rounded-full transition-all ${
-							index === currentIndex
-								? "w-3 h-3 md:w-[19px] md:h-[19px] bg-[#00C8C8]"
-								: "w-2 h-2 md:w-[8px] md:h-[8px] bg-[#D9D9D9]"
-						}`}
-					/>
-				))}
+			{items.map((_, index) => (
+				<button
+					key={index}
+					onClick={() => {
+						const slider = sliderRef.current;
+						if (!slider) return;
+						slider.scrollTo({ left: index * slider.clientWidth, behavior: "smooth" });
+						currentIndexRef.current = index;
+						setCurrentIndex(index);
+					}}
+					className={`rounded-full transition-all ${
+						index === currentIndex
+							? "w-3 h-3 md:w-[19px] md:h-[19px] bg-[#00C8C8]"
+							: "w-2 h-2 md:w-[8px] md:h-[8px] bg-[#D9D9D9]"
+					}`}
+				/>
+			))}
 			</div>
 
 			<div
 				ref={sliderRef}
-				className="relative flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar">
+				className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar">
 				{items.map((item) => (
 					<div
 						key={item.id}

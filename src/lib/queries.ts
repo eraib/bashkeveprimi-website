@@ -1,16 +1,26 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
 	donationsApi,
+	getAboutPage,
 	getCauses,
 	getOrganizationCurrent,
 	getOrphanProjectBySlug,
 	getOrphanProjects,
 	getProjectBySlug,
 	getProjects,
+	submitContactMessage,
 	submitHelpRequest,
 	type CheckoutSessionRequest,
+	type ContactMessagePayload,
 	type HelpRequestPayload,
 } from "./api";
+
+export function useAboutPage() {
+	return useQuery({
+		queryKey: ["about"],
+		queryFn: getAboutPage,
+	});
+}
 
 export function useOrganizationCurrent() {
 	return useQuery({
@@ -89,6 +99,12 @@ export function useCreateCheckoutSession() {
 export function useSubmitHelpRequest() {
 	return useMutation({
 		mutationFn: (payload: HelpRequestPayload) => submitHelpRequest(payload),
+	});
+}
+
+export function useSubmitContactMessage() {
+	return useMutation({
+		mutationFn: (payload: ContactMessagePayload) => submitContactMessage(payload),
 	});
 }
 
