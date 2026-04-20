@@ -2,45 +2,38 @@ import { useEffect, useRef, useState } from "react";
 import littleOrphan from "../assets/images/little-orphan.svg";
 import lineCircle from "../assets/icons/line-circle.svg";
 import squiggle from "../assets/icons/squiggle.svg";
+import { useCausesList } from "../lib/queries";
+import { useNavigate } from "react-router-dom";
 
 export default function PeriodicActions() {
 	const sliderRef = useRef<HTMLDivElement>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
-	const items = [
-		{
-			id: 1,
-			title: "Give package",
-			slogan: "Change a Life.",
-			description:
-				"From emergency food packs to long-term hunger solutions, every gift you make feeds hope, restores dignity, and sustains lives. Make an impact one meal, one family at a time.",
-			image: littleOrphan,
-		},
-		{
-			id: 2,
-			title: "Help Street Animals",
-			slogan: "Change Someone's Life",
-			description:
-				"Your donation helps feed and care for abandoned animals in your city. Every little bit counts!",
-			image: littleOrphan,
-		},
-		{
-			id: 3,
-			title: "Support Children's Education",
-			slogan: "Change Someone's Life",
-			description:
-				"We provide school supplies and tuition for children in rural areas who can't afford education.",
-			image: littleOrphan,
-		},
-		{
-			id: 4,
-			title: "Support Orphans",
-			slogan: "Change Someone's Life",
-			description:
-				"Every child deserves love, care, and a chance to dream. Your support can help provide food, shelter, and education to orphans in need.",
-			image: littleOrphan,
-		},
-	];
+  const { data } = useCausesList({
+    ordering: "-created_at",
+    is_active: true,
+    page: 1,
+  });
+
+  const items =
+    data?.results?.slice(0, 4).map((cause) => ({
+      id: cause.id,
+      title: cause.title,
+      slogan: "Change a Life.",
+      description: cause.summary,
+      image: cause.cover_image || littleOrphan,
+    })) ??
+    [
+      {
+        id: 1,
+        title: "Give package",
+        slogan: "Change a Life.",
+        description:
+          "From emergency food packs to long-term hunger solutions, every gift you make feeds hope, restores dignity, and sustains lives. Make an impact one meal, one family at a time.",
+        image: littleOrphan,
+      },
+    ];
 
 	useEffect(() => {
 		const slider = sliderRef.current;
@@ -141,7 +134,9 @@ export default function PeriodicActions() {
 										{item.description}
 									</p>
 								</div>
-								<button className="bg-[#00CFD0] text-white text-[14px] uppercase py-3 px-8 rounded-[24px] w-full sm:w-[202px] h-[48px] flex items-center justify-center hover:bg-[#00b6b7] transition font-bold">
+								<button
+									onClick={() => navigate("/")}
+									className="bg-[#00CFD0] text-white text-[14px] uppercase py-3 px-8 rounded-[24px] w-full sm:w-[202px] h-[48px] flex items-center justify-center hover:bg-[#00b6b7] transition font-bold">
 									Make A Donation
 								</button>
 							</div>

@@ -5,10 +5,12 @@ import { menuitems } from "../constants/menuitems";
 import { useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import DonationModal from "./DonationModal";
+import { useOrganizationCurrent } from "../lib/queries";
 
 const Header = () => {
 	const navigate = useNavigate();
 	const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+	const { data: organization } = useOrganizationCurrent();
 
 	return (
 		<>
@@ -17,10 +19,10 @@ const Header = () => {
 					<div className="h-16 flex items-center px-4 sm:px-8 md:px-16 lg:px-32">
 						<div
 							className="text-3xl text-white flex items-center gap-1 hover:cursor-pointer"
-							onClick={() => navigate("/home")}>
+							onClick={() => navigate("/")}>
 							<img className="w-12 h-12" src={logo} alt="logo" />
 							<p className="text-[#00CFD0] hidden sm:flex font-bold break-normal max-w-40 text-base ">
-								Organizata Bashkeveprimi
+								{organization?.name || "Organizata Bashkeveprimi"}
 							</p>
 						</div>
 

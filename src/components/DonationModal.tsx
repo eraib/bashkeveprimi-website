@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { FaHeart, FaChild, FaHandHoldingHeart, FaGlobe } from 'react-icons/fa';
-import { donationsApi } from '../lib/api';
+import { useCreateCheckoutSession } from '../lib/queries';
 import clsx from 'clsx';
 
 interface DonationModalProps {
@@ -48,6 +48,7 @@ const designationOptions: DesignationOption[] = [
 const presetAmounts = [10, 25, 50, 100, 250, 500];
 
 const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
+  const createCheckoutSession = useCreateCheckoutSession();
   const [step, setStep] = useState<'amount' | 'details' | 'processing'>('amount');
   const [selectedAmount, setSelectedAmount] = useState<number | null>(50);
   const [customAmount, setCustomAmount] = useState('');
@@ -56,7 +57,7 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
   const [donorName, setDonorName] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = createCheckoutSession.isPending;
 
   const effectiveAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
 
@@ -85,13 +86,12 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
   const handleDonate = async () => {
     if (!effectiveAmount) return;
     
-    setIsLoading(true);
     setError(null);
 
     try {
       const baseUrl = window.location.origin;
       
-      const response = await donationsApi.createCheckoutSession({
+      const response = await createCheckoutSession.mutateAsync({
         amount_eur_cents: Math.round(effectiveAmount * 100),
         designation_type: designation,
         donor_email: donorEmail || undefined,
@@ -105,14 +105,12 @@ const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
       window.location.href = response.checkout_url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-      setIsLoading(false);
     }
   };
 
   const handleClose = () => {
     setStep('amount');
     setError(null);
-    setIsLoading(false);
     onClose();
   };
 
