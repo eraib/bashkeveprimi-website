@@ -2,50 +2,33 @@ import GroceriesSupply from "../assets/images/groceries-supply.svg";
 import ThreeOrphans from "../assets/images/three-orphans.svg";
 import WaterSupply from "../assets/images/water-suply.svg";
 import LoadingBar from "./LoadingBar";
+import { useCausesList } from "../lib/queries";
 
 export const OrganizationRecentFeatures = () => {
   const formatCurrency = (amount: string) => {
     return Number(amount).toLocaleString("en-US");
   };
 
-  const causes = [
-    {
-      id: 1,
-      title: "Support Orphans",
-      demandedAmount: "10000",
-      collectedAmount: "9500",
-      description:
-        "Every child deserves love, care, and a chance to dream. Your support can help provide food, shelter, and education to orphans in need. Together, we can build a brighter future—one child at a time.",
-      image: GroceriesSupply,
-    },
-    {
-      id: 2,
-      title: "Help Street Animals",
-      demandedAmount: "10000",
-      collectedAmount: "180",
-      description:
-        "Your donation helps feed and care for abandoned animals in your city. Every little bit counts!",
-      image: ThreeOrphans,
-    },
-    {
-      id: 3,
-      title: "Support Children’s Education",
-      demandedAmount: "10000",
-      collectedAmount: "1500",
-      description:
-        "We provide school supplies and tuition for children in rural areas who can’t afford education.",
-      image: WaterSupply,
-    },
-    {
-      id: 4,
-      title: "Provide Clean Water",
-      demandedAmount: "5000",
-      collectedAmount: "3200",
-      description:
-        "Millions lack access to clean water. Fund a well or filtration system to bring life-sustaining water to a community in need, improving health and reducing disease.",
-      image: WaterSupply,
-    },
-  ];
+  const { data, isLoading } = useCausesList({
+    ordering: "-created_at",
+    is_active: true,
+    page: 1,
+  });
+
+  const fallbackImages = [GroceriesSupply, ThreeOrphans, WaterSupply, WaterSupply];
+  const causes = (data?.results ?? []).slice(0, 4).map((cause, idx) => {
+    const collectedAmount = cause.total_donated ?? "0";
+    const demandedAmount = cause.goal_amount ?? "0";
+
+    return {
+      id: cause.id,
+      title: cause.title,
+      demandedAmount,
+      collectedAmount,
+      description: cause.summary,
+      image: cause.cover_image || fallbackImages[idx] || WaterSupply,
+    };
+  });
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 parent px-4 sm:px-8 lg:px-[100px] py-12 sm:py-16 lg:py-[96px] bg-[#F3F2E7]">
@@ -73,7 +56,23 @@ export const OrganizationRecentFeatures = () => {
         </h1>
       </div>
 
-      {causes.map((item) => (
+      {isLoading && causes.length === 0 ? (
+        [...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="bg-[#F3F2E7] rounded-[20px] overflow-hidden pb-[30px] flex flex-col animate-pulse"
+          >
+            <div className="w-full h-[250px] bg-black/10" />
+            <div className="flex flex-col gap-[20px] px-[23px] pt-[15px]">
+              <div className="h-6 bg-black/10 rounded w-2/3" />
+              <div className="h-4 bg-black/10 rounded w-full" />
+              <div className="h-4 bg-black/10 rounded w-5/6" />
+              <div className="h-12 bg-black/10 rounded w-[202px]" />
+            </div>
+          </div>
+        ))
+      ) : (
+        causes.map((item) => (
         <div
           key={item.id}
           className="bg-[#F3F2E7] rounded-[20px] overflow-hidden hover:shadow-xl transition duration-300 pb-[30px] flex flex-col">
@@ -117,7 +116,8 @@ export const OrganizationRecentFeatures = () => {
             </button>
           </div>
         </div>
-      ))}
+        ))
+      )}
     </div>
   );
 };

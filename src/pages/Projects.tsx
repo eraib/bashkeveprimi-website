@@ -1,18 +1,15 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import ProjectAndDescription from "../components/ProjectAndDescription";
-
+import ProjectsContent from "../components/ProjectsContent";
 
 function Projects() {
 	return (
 		<>
-	    <Header />
-        <main className="min-h-screen mt-1">
-		<ProjectAndDescription/>
-
-		</main>
-
-        <Footer />
+			<Header />
+			<main className="min-h-screen mt-1">
+				<ProjectsContent />
+			</main>
+			<Footer />
 		</>
 	);
 }

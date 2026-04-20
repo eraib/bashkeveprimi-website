@@ -1,13 +1,13 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import ProjectAndDescription from "../components/ProjectAndDescription";
+import OrphansContent from "../components/OrphansContent";
 
 function Orphans() {
   return (
     <>
       <Header />
       <main className="min-h-screen mt-1">
-        <ProjectAndDescription />
+        <OrphansContent />
       </main>
 
       <Footer />
