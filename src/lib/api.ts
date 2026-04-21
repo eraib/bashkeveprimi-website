@@ -30,6 +30,17 @@ export type CauseList = {
 	created_at: string;
 };
 
+type RawTranslated<T> = Omit<T, "title" | "summary"> & {
+	title: string | null;
+	summary: string | null;
+};
+
+function sanitizeTranslated<T extends { title: string; summary: string }>(
+	raw: RawTranslated<T>
+): T {
+	return { ...raw, title: raw.title ?? "", summary: raw.summary ?? "" } as T;
+}
+
 export type OrganizationProfile = {
 	id: number;
 	name: string;
@@ -55,8 +66,8 @@ export async function getCauses(params?: {
 	ordering?: string;
 	is_active?: boolean;
 }): Promise<Paginated<CauseList>> {
-	const { data } = await http.get<Paginated<CauseList>>("/causes/", { params });
-	return data;
+	const { data } = await http.get<Paginated<RawTranslated<CauseList>>>("/causes/", { params });
+	return { ...data, results: data.results.map(sanitizeTranslated<CauseList>) };
 }
 
 /** Same field set as CauseListSerializer; embedded on project detail. */
@@ -94,6 +105,12 @@ export type ProjectDetail = {
 	updated_at: string;
 };
 
+type RawProjectDetail = Omit<ProjectDetail, "title" | "summary" | "content"> & {
+	title: string | null;
+	summary: string | null;
+	content: string | null;
+};
+
 export async function getProjects(params?: {
 	page?: number;
 	search?: string;
@@ -101,17 +118,22 @@ export async function getProjects(params?: {
 	is_active?: boolean;
 	cause?: number;
 }): Promise<Paginated<ProjectListItem>> {
-	const { data } = await http.get<Paginated<ProjectListItem>>("/projects/", {
+	const { data } = await http.get<Paginated<RawTranslated<ProjectListItem>>>("/projects/", {
 		params,
 	});
-	return data;
+	return { ...data, results: data.results.map(sanitizeTranslated<ProjectListItem>) };
 }
 
 export async function getProjectBySlug(slug: string): Promise<ProjectDetail> {
-	const { data } = await http.get<ProjectDetail>(
+	const { data } = await http.get<RawProjectDetail>(
 		`/projects/${encodeURIComponent(slug)}/`
 	);
-	return data;
+	return {
+		...data,
+		title: data.title ?? "",
+		summary: data.summary ?? "",
+		content: data.content ?? "",
+	};
 }
 
 /** Orphan-projects list item — GET /orphan-projects/ returns DRF paginated JSON. */
@@ -143,26 +165,37 @@ export type OrphanProjectDetail = {
 	updated_at: string;
 };
 
+type RawOrphanProjectDetail = Omit<OrphanProjectDetail, "title" | "summary" | "content"> & {
+	title: string | null;
+	summary: string | null;
+	content: string | null;
+};
+
 export async function getOrphanProjects(params?: {
 	page?: number;
 	is_active?: boolean;
 	search?: string;
 	ordering?: string;
 }): Promise<Paginated<OrphanProjectListItem>> {
-	const { data } = await http.get<Paginated<OrphanProjectListItem>>(
+	const { data } = await http.get<Paginated<RawTranslated<OrphanProjectListItem>>>(
 		"/orphan-projects/",
 		{ params }
 	);
-	return data;
+	return { ...data, results: data.results.map(sanitizeTranslated<OrphanProjectListItem>) };
 }
 
 export async function getOrphanProjectBySlug(
 	slug: string
 ): Promise<OrphanProjectDetail> {
-	const { data } = await http.get<OrphanProjectDetail>(
+	const { data } = await http.get<RawOrphanProjectDetail>(
 		`/orphan-projects/${encodeURIComponent(slug)}/`
 	);
-	return data;
+	return {
+		...data,
+		title: data.title ?? "",
+		summary: data.summary ?? "",
+		content: data.content ?? "",
+	};
 }
 
 export type RequestType = "orphan" | "family" | "volunteer" | "other";
@@ -228,9 +261,36 @@ export type AboutPage = {
 	video_url: string | null;
 };
 
+type RawAboutPage = {
+	[K in keyof AboutPage]: AboutPage[K] extends string ? string | null : AboutPage[K];
+};
+
+function sanitizeAboutPage(raw: RawAboutPage): AboutPage {
+	return {
+		hero_title: raw.hero_title ?? "",
+		hero_subtitle: raw.hero_subtitle ?? "",
+		hero_image: raw.hero_image,
+		stats: raw.stats,
+		cta_title: raw.cta_title ?? "",
+		cta_link_text: raw.cta_link_text ?? "",
+		cta_url: raw.cta_url ?? "",
+		support_title: raw.support_title ?? "",
+		support_body: raw.support_body ?? "",
+		support_image: raw.support_image,
+		org_title: raw.org_title ?? "",
+		mission_text: raw.mission_text ?? "",
+		vision_text: raw.vision_text ?? "",
+		values_text: raw.values_text ?? "",
+		org_image_1: raw.org_image_1,
+		org_image_2: raw.org_image_2,
+		video_title: raw.video_title ?? "",
+		video_url: raw.video_url,
+	};
+}
+
 export async function getAboutPage(): Promise<AboutPage> {
-	const { data } = await http.get<AboutPage>("/about/");
-	return data;
+	const { data } = await http.get<RawAboutPage>("/about/");
+	return sanitizeAboutPage(data);
 }
 
 export async function submitContactMessage(

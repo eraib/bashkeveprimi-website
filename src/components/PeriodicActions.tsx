@@ -46,8 +46,7 @@ export default function PeriodicActions() {
 
 	const startInterval = () =>
 		setInterval(() => {
-			const nextIndex = currentIndexRef.current + 1;
-			if (nextIndex >= slideCount) return;
+			const nextIndex = (currentIndexRef.current + 1) % slideCount;
 			slider.scrollTo({
 				left: nextIndex * slider.clientWidth,
 				behavior: "smooth",
@@ -138,12 +137,12 @@ export default function PeriodicActions() {
 			</div>
 
 			<div
-				ref={sliderRef}
-				className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar">
+		ref={sliderRef}
+			className="relative flex w-full overflow-x-auto snap-x snap-mandatory no-scrollbar">
 				{items.map((item) => (
 					<div
-						key={item.id}
-						className="flex-none w-screen min-h-[500px] md:h-[600px] bg-[#F3F2E7] flex flex-col md:flex-row rounded-[8px] snap-start">
+					key={item.id}
+					className="flex-none w-full min-h-[500px] md:h-[600px] bg-[#F3F2E7] flex flex-col md:flex-row rounded-[8px] snap-start">
 						<div className="w-full md:w-1/2 flex flex-col justify-center px-4 sm:px-8 md:pl-[98px] md:pr-[48px] py-8 md:py-[48px] relative z-40">
 							<div className="flex flex-col gap-6 md:gap-[48px] max-w-full md:w-[517px]">
 								<div className="flex flex-col gap-4 md:gap-[24px]">
